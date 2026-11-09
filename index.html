@@ -1,0 +1,1880 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fundamentos de Redes · Unidades II y III</title>
+<style>
+:root{
+  --bg:#f6f7f9; --panel:#ffffff; --ink:#1d2433; --ink2:#4a5568; --line:#dde2ea;
+  --pri:#1f6f5c; --pri2:#2c8a73; --pri-soft:#e3f2ee;
+  --azul:#2563eb; --azul-soft:#e8efff;
+  --ambar:#b45309; --ambar-soft:#fff5e6;
+  --verde:#15803d; --verde-soft:#eaf7ee;
+  --rojo:#b91c1c; --rojo-soft:#fdecec;
+  --morado:#6d28d9; --morado-soft:#f1ebff;
+  --code:#0f172a; --code-ink:#e2e8f0;
+  --b1:#2563eb; --b2:#15803d; --b3:#b45309; --b4:#9333ea; --b5:#db2777;
+  --radio:10px; --side:290px;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#0f1419; --panel:#171e26; --ink:#e6eaf0; --ink2:#a8b3c2; --line:#2a3440;
+    --pri:#4fbf9f; --pri2:#6fd3b6; --pri-soft:#16302a;
+    --azul:#7aa5ff; --azul-soft:#18233a;
+    --ambar:#f2b25c; --ambar-soft:#2e2414;
+    --verde:#6fd391; --verde-soft:#15291c;
+    --rojo:#ff8a8a; --rojo-soft:#341a1a;
+    --morado:#b69bff; --morado-soft:#241c3a;
+    --code:#0a0e13; --code-ink:#d6dde8;
+    --b1:#7aa5ff; --b2:#6fd391; --b3:#f2b25c; --b4:#c79bff; --b5:#ff8cc2;
+  }
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:"Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.62;font-size:16.5px}
+a{color:var(--azul)}
+/* ---------- Barra lateral ---------- */
+#side{position:fixed;top:0;left:0;bottom:0;width:var(--side);background:var(--panel);border-right:1px solid var(--line);overflow-y:auto;padding:18px 14px 40px;z-index:20}
+#side .logo{display:flex;gap:10px;align-items:center;margin:0 6px 14px}
+#side .logo svg{flex:none}
+#side .logo b{font-size:15px;line-height:1.25}
+#side .logo small{display:block;color:var(--ink2);font-weight:400;font-size:12.5px}
+#buscar{width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);font-size:14px;margin-bottom:12px}
+#side h4{font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink2);margin:16px 8px 6px}
+#side a{display:block;padding:6px 10px;border-radius:7px;color:var(--ink);text-decoration:none;font-size:14.2px}
+#side a.sub{padding-left:24px;font-size:13.4px;color:var(--ink2)}
+#side a:hover{background:var(--pri-soft)}
+#side a.activo{background:var(--pri);color:#fff}
+#side a.oculto{display:none}
+#menuBtn{display:none;position:fixed;top:12px;left:12px;z-index:30;background:var(--pri);color:#fff;border:0;border-radius:8px;padding:9px 13px;font-size:15px;cursor:pointer}
+/* ---------- Contenido ---------- */
+main{margin-left:var(--side);padding:28px 44px 80px;max-width:calc(var(--side) + 1040px)}
+.hero{background:linear-gradient(135deg,var(--pri),#174f72);color:#fff;border-radius:16px;padding:34px 36px;margin-bottom:30px}
+.hero h1{margin:0 0 8px;font-size:32px;line-height:1.2}
+.hero p{margin:6px 0;opacity:.93;max-width:760px}
+.hero .chips{margin-top:16px;display:flex;flex-wrap:wrap;gap:8px}
+.hero .chips span{background:rgba(255,255,255,.16);padding:5px 12px;border-radius:99px;font-size:13.5px}
+section.tema{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:30px 36px;margin:0 0 28px;scroll-margin-top:16px}
+.unidad-banner{display:flex;align-items:center;gap:16px;margin:44px 0 18px;padding:18px 24px;border-radius:14px;background:var(--pri-soft);border-left:6px solid var(--pri);scroll-margin-top:16px}
+.unidad-banner .num{font-size:40px;font-weight:800;color:var(--pri);line-height:1}
+.unidad-banner h2{margin:0;font-size:23px}
+.unidad-banner p{margin:4px 0 0;color:var(--ink2);font-size:14.5px}
+h2.t{font-size:26px;margin:0 0 4px;color:var(--pri);line-height:1.25}
+.objetivo{color:var(--ink2);font-size:14.5px;margin:0 0 18px;padding-bottom:14px;border-bottom:1px dashed var(--line)}
+.objetivo b{color:var(--ink)}
+h3{font-size:20px;margin:30px 0 10px;scroll-margin-top:16px}
+h4{font-size:17px;margin:22px 0 8px}
+p{margin:10px 0}
+ul,ol{padding-left:24px}
+li{margin:4px 0}
+/* ---------- Cajas ---------- */
+.caja{border-radius:var(--radio);padding:14px 18px 14px 18px;margin:16px 0;border-left:5px solid}
+.caja>.tit{font-weight:700;display:flex;align-items:center;gap:8px;margin-bottom:4px;font-size:15.5px}
+.caja p:first-of-type{margin-top:4px}
+.caja p:last-child{margin-bottom:2px}
+.concepto{background:var(--azul-soft);border-color:var(--azul)} .concepto>.tit{color:var(--azul)}
+.analogia{background:var(--ambar-soft);border-color:var(--ambar)} .analogia>.tit{color:var(--ambar)}
+.ejemplo{background:var(--verde-soft);border-color:var(--verde)} .ejemplo>.tit{color:var(--verde)}
+.alerta{background:var(--rojo-soft);border-color:var(--rojo)} .alerta>.tit{color:var(--rojo)}
+.clave{background:var(--morado-soft);border-color:var(--morado)} .clave>.tit{color:var(--morado)}
+/* ---------- Tablas ---------- */
+.tabla-wrap{overflow-x:auto;margin:14px 0}
+table{border-collapse:collapse;width:100%;font-size:14.6px;background:var(--panel)}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:var(--pri);color:#fff;font-weight:600}
+tr:nth-child(even) td{background:color-mix(in srgb,var(--bg) 70%,transparent)}
+td.mono,th.mono,.mono{font-family:Consolas,"Cascadia Mono","Courier New",monospace}
+/* ---------- Código / CLI ---------- */
+pre{background:var(--code);color:var(--code-ink);padding:14px 16px;border-radius:9px;overflow-x:auto;font-size:14px;line-height:1.5;font-family:Consolas,"Cascadia Mono","Courier New",monospace;margin:12px 0}
+pre .c{color:#7dd3a8} pre .p{color:#93c5fd} pre .k{color:#fbbf24} pre .m{color:#94a3b8;font-style:italic}
+code{font-family:Consolas,"Cascadia Mono","Courier New",monospace;background:var(--bg);border:1px solid var(--line);padding:1px 5px;border-radius:5px;font-size:.92em}
+/* ---------- Diagramas de bits ---------- */
+.bits{display:flex;flex-wrap:wrap;gap:0;margin:14px 0;font-family:Consolas,"Courier New",monospace;font-size:14px;border-radius:8px;overflow:hidden;border:1px solid var(--line)}
+.bits>div{padding:10px 8px;text-align:center;color:#fff;flex:1 1 auto}
+.bits>div small{display:block;font-family:"Segoe UI",system-ui,sans-serif;font-size:11.5px;opacity:.92;margin-top:3px}
+.f1{background:var(--b1)} .f2{background:var(--b2)} .f3{background:var(--b3)} .f4{background:var(--b4)} .f5{background:var(--b5)}
+@media (prefers-color-scheme: dark){ .bits>div{color:#0b0f14} }
+.n1{color:var(--b1);font-weight:700} .n2{color:var(--b2);font-weight:700} .n3{color:var(--b3);font-weight:700} .n4{color:var(--b4);font-weight:700} .n5{color:var(--b5);font-weight:700}
+.binario{font-family:Consolas,"Courier New",monospace;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:12px 14px;overflow-x:auto;white-space:pre;font-size:14.2px;line-height:1.7}
+/* ---------- Grids y tarjetas ---------- */
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin:14px 0}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:14px 0}
+.card{border:1px solid var(--line);border-radius:10px;padding:14px 16px;background:var(--bg)}
+.card h5{margin:0 0 6px;font-size:15.5px;color:var(--pri)}
+.card p{margin:4px 0;font-size:14.6px}
+.tag{display:inline-block;padding:1px 9px;border-radius:99px;font-size:12.5px;font-weight:600;background:var(--pri-soft);color:var(--pri);margin-right:4px}
+/* ---------- Flujo / pasos ---------- */
+.pasos{counter-reset:paso;list-style:none;padding:0}
+.pasos>li{counter-increment:paso;position:relative;padding:8px 0 8px 46px;margin:6px 0}
+.pasos>li::before{content:counter(paso);position:absolute;left:0;top:6px;width:32px;height:32px;border-radius:50%;background:var(--pri);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center}
+.svgbox{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:12px;margin:14px 0;overflow-x:auto}
+.svgbox svg{display:block;margin:auto;max-width:100%;height:auto}
+.svgbox svg text{fill:var(--ink);font-family:"Segoe UI",system-ui,sans-serif}
+.pie{font-size:13px;color:var(--ink2);text-align:center;margin-top:6px}
+/* ---------- Herramientas ---------- */
+.tool{border:2px solid var(--pri);border-radius:12px;padding:18px 20px;margin:20px 0;background:var(--pri-soft)}
+.tool h4{margin:0 0 10px;color:var(--pri)}
+.tool label{font-size:14px;font-weight:600;display:block;margin-bottom:4px}
+.tool input,.tool select{padding:8px 10px;border:1px solid var(--line);border-radius:7px;font-size:15px;background:var(--panel);color:var(--ink);font-family:Consolas,"Courier New",monospace;width:100%}
+.tool .fila{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end}
+.tool .fila>div{flex:1 1 170px}
+.tool button{background:var(--pri);color:#fff;border:0;border-radius:7px;padding:9px 18px;font-size:15px;cursor:pointer;font-weight:600}
+.tool button:hover{background:var(--pri2)}
+.tool .salida{margin-top:14px;font-size:14.5px}
+.tool .err{color:var(--rojo);font-weight:600}
+/* ---------- Autoevaluación ---------- */
+details.preg{border:1px solid var(--line);border-radius:9px;margin:10px 0;background:var(--bg)}
+details.preg summary{cursor:pointer;padding:11px 14px;font-weight:600}
+details.preg div{padding:0 16px 12px}
+/* ---------- Varios ---------- */
+.volver{display:inline-block;margin-top:14px;font-size:13.5px}
+footer{margin-left:var(--side);padding:24px 44px 40px;color:var(--ink2);font-size:13.5px;border-top:1px solid var(--line)}
+mark{background:#fde68a;color:#111;padding:0 3px;border-radius:3px}
+@media (max-width: 920px){
+  #side{transform:translateX(-100%);transition:transform .25s}
+  #side.abierto{transform:none;box-shadow:0 0 40px rgba(0,0,0,.3)}
+  #menuBtn{display:block}
+  main,footer{margin-left:0;padding:64px 16px 60px}
+  section.tema{padding:22px 18px}
+  .hero{padding:26px 20px}
+}
+@media print{
+  #side,#menuBtn,.tool{display:none!important}
+  main,footer{margin-left:0;padding:0}
+  section.tema{break-inside:auto;border:0}
+}
+</style>
+</head>
+<body>
+<button id="menuBtn" aria-label="Abrir menú">☰ Temas</button>
+
+<nav id="side">
+  <div class="logo">
+    <svg width="38" height="38" viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="9" fill="#1f6f5c"/><circle cx="20" cy="11" r="4" fill="#fff"/><circle cx="10" cy="28" r="4" fill="#fff"/><circle cx="30" cy="28" r="4" fill="#fff"/><path d="M20 15 L10 24 M20 15 L30 24 M14 28 H26" stroke="#fff" stroke-width="2"/></svg>
+    <b>Fundamentos de Redes<small>Unidades II y III · Material de consulta</small></b>
+  </div>
+  <input id="buscar" type="search" placeholder="Filtrar temas…" aria-label="Filtrar temas">
+
+  <a href="#inicio">Inicio</a>
+
+  <h4>Unidad II · Capa de red e IP</h4>
+  <a href="#u2-capa-red">1. Protocolos de la Capa de Red · IPv4 e IPv6</a>
+  <a href="#u2-enrutamiento">2. Introducción al enrutamiento · MAC e IP</a>
+  <a href="#u2-arp">3. ARP</a>
+  <a href="#u2-router">4. Configuración básica de routers</a>
+  <a href="#u2-ipv4">5. Direccionamiento IPv4</a>
+  <a class="sub" href="#ipv4-binario">Binario y estructura</a>
+  <a class="sub" href="#ipv4-mascara">Máscara y operación AND</a>
+  <a class="sub" href="#ipv4-tipos">Tipos de direcciones</a>
+  <a class="sub" href="#ipv4-subredes">Subredes paso a paso</a>
+  <a class="sub" href="#ipv4-vlsm">VLSM</a>
+  <a class="sub" href="#ipv4-plan">Planificación</a>
+  <a class="sub" href="#calc-ipv4">🧮 Calculadora IPv4</a>
+  <a href="#u2-ipv6">6. Direccionamiento IPv6</a>
+  <a class="sub" href="#ipv6-formato">Formato y abreviación</a>
+  <a class="sub" href="#ipv6-esquema">Esquema: prefijo, subred, interfaz</a>
+  <a class="sub" href="#ipv6-tipos">Clasificación de direcciones</a>
+  <a class="sub" href="#ipv6-lan">¿Qué se usa en una LAN?</a>
+  <a class="sub" href="#ipv6-eui64">EUI-64 e ID de interfaz</a>
+  <a class="sub" href="#ipv6-slaac">Stateful vs Stateless</a>
+  <a class="sub" href="#ipv6-subredes">Subredes IPv6 paso a paso</a>
+  <a class="sub" href="#calc-ipv6">🧮 Herramientas IPv6</a>
+  <a href="#u2-icmp">7. ICMP</a>
+
+  <h4>Unidad III · Aplicaciones de red</h4>
+  <a href="#u3-tcpudp">1. Suite de protocolos · TCP y UDP</a>
+  <a href="#u3-capas">2. Capas de Aplicación, Presentación y Sesión</a>
+  <a href="#u3-protocolos">3. HTTP, DNS, DHCP, correo, FTP, P2P…</a>
+  <a href="#u3-seguridad">4. Seguridad, confiabilidad y buenas prácticas</a>
+
+  <h4>Extras</h4>
+  <a href="#autoeval">Autoevaluación</a>
+  <a href="#glosario">Glosario rápido</a>
+</nav>
+
+<main>
+<div class="hero" id="inicio">
+  <h1>Fundamentos de Redes</h1>
+  <p><b>Unidad II.</b> Comunicación de redes y direccionamientos IP · <b>Unidad III.</b> Comunicación de aplicaciones de red.</p>
+  <p>Material de consulta con conceptos, ejemplos resueltos y analogías de la vida diaria. Cada tema incluye cajas de colores para ubicar rápido lo importante:</p>
+  <div class="chips">
+    <span>🔵 Concepto</span><span>🟠 Analogía</span><span>🟢 Ejemplo</span><span>🟣 Para recordar</span><span>🔴 Cuidado</span><span>🧮 Herramienta interactiva</span>
+  </div>
+</div>
+
+<div class="grid2">
+  <div class="card"><h5>Propósito · Unidad II</h5><p>El estudiante determinará los protocolos y estándares de la capa de red, así como la estructura de los protocolos IPv4 e IPv6, para realizar la configuración básica de un router.</p></div>
+  <div class="card"><h5>Propósito · Unidad III</h5><p>El estudiante seleccionará los protocolos, funciones y servicios utilizados en las capas superiores del modelo de referencia OSI para la interacción entre las aplicaciones del usuario final.</p></div>
+</div>
+
+<!-- =================== UNIDAD II =================== -->
+<div class="unidad-banner" id="unidad2">
+  <div class="num">II</div>
+  <div><h2>Comunicación de redes y direccionamientos IP</h2>
+  <p>Capa de red, enrutamiento, ARP, configuración de routers, IPv4, IPv6 e ICMP.</p></div>
+</div>
+
+<!-- ========== 1. CAPA DE RED ========== -->
+<section class="tema" id="u2-capa-red">
+<h2 class="t">1. Protocolos y estándares de la Capa de Red · Protocolo IPv4 e IPv6</h2>
+<p class="objetivo"><b>Saber:</b> Identificar protocolos y estándares de la Capa de Red. Describir las características básicas del protocolo IP.</p>
+
+<div class="caja concepto"><div class="tit">🔵 Concepto</div>
+<p>La <b>Capa de Red</b> es la capa 3 del modelo OSI (equivale a la capa <i>Internet</i> del modelo TCP/IP). Su trabajo es <b>llevar paquetes de un dispositivo a otro aunque estén en redes distintas</b>, eligiendo el camino a través de routers.</p>
+</div>
+
+<div class="caja analogia"><div class="tit">🟠 Analogía: el servicio de paquetería</div>
+<p>Imagina que envías una caja de Huejutla a Monterrey. Tú no sabes por qué carreteras va a pasar; solo escribes la <b>dirección de destino</b> y la <b>de remitente</b>. La paquetería (la capa de red) decide la ruta, pasa por varios centros de distribución (los <b>routers</b>) y entrega. Si la caja es muy grande para un camión, la divide (fragmentación). Así funciona IP.</p>
+</div>
+
+<h3>Las 4 funciones básicas de la capa de red</h3>
+<div class="grid2">
+  <div class="card"><h5>① Direccionamiento</h5><p>Cada dispositivo final recibe una dirección IP única que lo identifica dentro de la red (como el domicilio de una casa).</p></div>
+  <div class="card"><h5>② Encapsulamiento</h5><p>Recibe el segmento de la capa de transporte y le agrega un <b>encabezado IP</b> con origen y destino. El resultado se llama <b>paquete</b>.</p></div>
+  <div class="card"><h5>③ Enrutamiento</h5><p>Los routers eligen el mejor camino para que el paquete llegue a la red destino. Cada router atravesado es un <b>salto (hop)</b>.</p></div>
+  <div class="card"><h5>④ Desencapsulamiento</h5><p>Al llegar, el destino revisa que la IP sea la suya, quita el encabezado y entrega el contenido a la capa de transporte.</p></div>
+</div>
+
+<h3>Protocolos y estándares de la capa de red</h3>
+<div class="tabla-wrap"><table>
+<tr><th>Protocolo / estándar</th><th>¿Para qué sirve?</th><th>Documento</th></tr>
+<tr><td><b>IPv4</b></td><td>Protocolo de Internet versión 4. Direcciones de 32 bits. Es el más usado todavía.</td><td>RFC 791</td></tr>
+<tr><td><b>IPv6</b></td><td>Versión 6. Direcciones de 128 bits. Resuelve el agotamiento de IPv4.</td><td>RFC 8200</td></tr>
+<tr><td><b>ICMP / ICMPv6</b></td><td>Mensajes de control y error (ping, traceroute, “destino inalcanzable”).</td><td>RFC 792 / RFC 4443</td></tr>
+<tr><td><b>ARP</b> (IPv4) / <b>NDP</b> (IPv6)</td><td>Averiguar la dirección MAC que corresponde a una IP. (ARP trabaja entre capa 2 y 3.)</td><td>RFC 826 / RFC 4861</td></tr>
+<tr><td><b>Protocolos de enrutamiento</b>: RIP, OSPF, EIGRP, BGP</td><td>Permiten que los routers intercambien información de rutas automáticamente.</td><td>Varios RFC</td></tr>
+<tr><td><b>IPsec</b></td><td>Seguridad (cifrado y autenticación) a nivel de paquete IP.</td><td>RFC 4301</td></tr>
+</table></div>
+<p>Los estándares de Internet se publican como <b>RFC</b> (<i>Request for Comments</i>) por la <b>IETF</b>; la asignación de direcciones la coordina <b>IANA</b> y, en nuestra región, <b>LACNIC</b> (Latinoamérica y el Caribe).</p>
+
+<h3>Características básicas del protocolo IP</h3>
+<div class="grid3">
+  <div class="card"><h5>🔌 Sin conexión</h5><p>No “marca” antes de enviar ni establece una sesión con el destino. Simplemente manda el paquete.</p></div>
+  <div class="card"><h5>🎯 Máximo esfuerzo (<i>best effort</i>)</h5><p>Hace lo posible por entregar, pero <b>no garantiza</b> que llegue, ni el orden, ni avisa si se pierde. De eso se encarga TCP (capa 4) si se necesita.</p></div>
+  <div class="card"><h5>🧩 Independiente del medio</h5><p>Funciona igual sobre cobre, fibra, Wi-Fi o satélite. Solo debe respetar el tamaño máximo (<b>MTU</b>) de cada medio.</p></div>
+</div>
+
+<div class="caja analogia"><div class="tit">🟠 Analogía: carta ordinaria vs. llamada</div>
+<p>IP es como <b>echar una carta al buzón</b>: no le hablas antes al destinatario (sin conexión), el correo hace su mejor esfuerzo pero no te avisa si se pierde (best effort), y da igual si viaja en avión o camión (independiente del medio).</p>
+</div>
+
+<h3>Encabezado IPv4 vs. encabezado IPv6</h3>
+<p>El encabezado es la “etiqueta de envío” del paquete. IPv6 simplificó la etiqueta para que los routers la procesen más rápido.</p>
+<div class="tabla-wrap"><table>
+<tr><th>Campo IPv4</th><th>Función</th><th>Equivalente en IPv6</th></tr>
+<tr><td>Versión (4 bits)</td><td>Indica 4 o 6</td><td>Versión (valor 6)</td></tr>
+<tr><td>IHL, longitud total</td><td>Tamaño del encabezado/paquete</td><td>Longitud de carga útil (<i>Payload Length</i>)</td></tr>
+<tr><td>Servicios diferenciados (DS)</td><td>Prioridad / QoS</td><td>Clase de tráfico (<i>Traffic Class</i>)</td></tr>
+<tr><td>—</td><td>—</td><td><b>Etiqueta de flujo</b> (<i>Flow Label</i>), nuevo: identifica flujos como video o voz</td></tr>
+<tr><td>TTL (Time To Live)</td><td>Saltos máximos; cada router resta 1 y, al llegar a 0, descarta el paquete (evita ciclos infinitos)</td><td>Límite de saltos (<i>Hop Limit</i>)</td></tr>
+<tr><td>Protocolo</td><td>Qué lleva dentro: 1=ICMP, 6=TCP, 17=UDP</td><td>Siguiente encabezado (<i>Next Header</i>)</td></tr>
+<tr><td>Checksum del encabezado</td><td>Detecta errores en el encabezado</td><td><b>Eliminado</b> (lo hacen capas 2 y 4)</td></tr>
+<tr><td>Identificación, banderas, desplazamiento</td><td>Fragmentación en routers</td><td><b>Eliminado</b>; en IPv6 solo fragmenta el origen (encabezado de extensión)</td></tr>
+<tr><td>Dirección origen / destino (32 bits c/u)</td><td>Quién envía / a quién va</td><td>Dirección origen / destino (128 bits c/u)</td></tr>
+<tr><td>Opciones</td><td>Variables, hacen el encabezado de 20 a 60 bytes</td><td>Encabezados de extensión; el básico es <b>fijo de 40 bytes</b></td></tr>
+</table></div>
+
+<div class="caja clave"><div class="tit">🟣 Para recordar</div>
+<ul>
+<li>IPv4: 32 bits ≈ 4,300 millones de direcciones → se agotaron.</li>
+<li>IPv6: 128 bits ≈ 340 sextillones (3.4×10<sup>38</sup>) → suficientes para cada dispositivo del planeta, muchas veces.</li>
+<li>IPv6 no usa <b>broadcast</b>, no necesita <b>NAT</b> y tiene configuración automática (SLAAC).</li>
+</ul>
+</div>
+<a class="volver" href="#inicio">↑ Volver al inicio</a>
+</section>
+
+<!-- ========== 2. ENRUTAMIENTO ========== -->
+<section class="tema" id="u2-enrutamiento">
+<h2 class="t">2. Introducción al enrutamiento · MAC e IP</h2>
+<p class="objetivo"><b>Saber:</b> Identificar los componentes de hardware y software de un router. Identificar los criterios, factores y elementos que permiten la interconexión de redes de datos.</p>
+
+<div class="caja concepto"><div class="tit">🔵 Concepto</div>
+<p>Un <b>router</b> (ruteador o enrutador) es un dispositivo de capa 3 que <b>conecta redes diferentes</b> y decide hacia dónde reenviar cada paquete según la <b>dirección IP de destino</b> y su <b>tabla de enrutamiento</b>. Un <b>switch</b>, en cambio, conecta dispositivos <i>dentro</i> de la misma red usando direcciones MAC.</p>
+</div>
+
+<div class="caja analogia"><div class="tit">🟠 Analogía: la caseta de cobro y los letreros de carretera</div>
+<p>El router es como un <b>cruce de carreteras con letreros</b>: “Pachuca → salida 1”, “Tampico → salida 2”, “cualquier otro destino → autopista principal”. El conductor (el paquete) no conoce el camino completo; en cada cruce lee el letrero y avanza al siguiente. Esos letreros son la <b>tabla de enrutamiento</b>.</p>
+</div>
+
+<h3>Componentes de hardware de un router</h3>
+<p>Un router es, en el fondo, una <b>computadora especializada</b>. Tiene casi las mismas piezas que una PC:</p>
+<div class="tabla-wrap"><table>
+<tr><th>Componente</th><th>¿Qué guarda o hace?</th><th>¿Se borra al apagar?</th><th>Equivalente en una PC</th></tr>
+<tr><td><b>CPU</b></td><td>Ejecuta el sistema operativo y procesa decisiones de enrutamiento.</td><td>—</td><td>Procesador</td></tr>
+<tr><td><b>RAM</b></td><td>Configuración en ejecución (<code>running-config</code>), tabla de enrutamiento, tabla ARP, búferes de paquetes.</td><td>✅ Sí (volátil)</td><td>Memoria RAM</td></tr>
+<tr><td><b>ROM</b></td><td>Programa de arranque (bootstrap), POST (autodiagnóstico) y un IOS mínimo de emergencia (ROMMON).</td><td>❌ No</td><td>BIOS/UEFI</td></tr>
+<tr><td><b>NVRAM</b></td><td>Configuración de inicio (<code>startup-config</code>).</td><td>❌ No</td><td>Configuración guardada</td></tr>
+<tr><td><b>Flash</b></td><td>Imagen del sistema operativo (IOS) y otros archivos.</td><td>❌ No</td><td>Disco duro / SSD</td></tr>
+<tr><td><b>Interfaces</b></td><td>Puertos LAN (GigabitEthernet), WAN (serial), consola, auxiliar, USB.</td><td>—</td><td>Tarjetas de red / puertos</td></tr>
+</table></div>
+
+<h4>Software del router</h4>
+<ul>
+<li><b>Sistema operativo</b>: en equipos Cisco es el <b>IOS</b> (<i>Internetwork Operating System</i>). Se maneja por línea de comandos (CLI).</li>
+<li><b>Archivo de configuración</b>: lista de comandos que define nombre, contraseñas, direcciones IP de interfaces, rutas, etc.</li>
+<li><b>Protocolos de enrutamiento</b>: programas internos (OSPF, EIGRP, RIP) que aprenden rutas automáticamente.</li>
+</ul>
+
+<h4>Proceso de arranque de un router</h4>
+<ol class="pasos">
+<li><b>POST</b> (desde ROM): revisa que el hardware funcione.</li>
+<li><b>Bootstrap</b> (desde ROM): busca el sistema operativo.</li>
+<li><b>Carga del IOS</b> desde Flash (o TFTP si no lo encuentra) hacia la RAM.</li>
+<li><b>Carga de la configuración</b>: copia <code>startup-config</code> de NVRAM a RAM como <code>running-config</code>. Si no existe, entra al diálogo de configuración inicial.</li>
+</ol>
+
+<h3>MAC e IP: dos direcciones, dos trabajos</h3>
+<div class="tabla-wrap"><table>
+<tr><th></th><th>Dirección MAC</th><th>Dirección IP</th></tr>
+<tr><td>Capa OSI</td><td>Capa 2 (Enlace de datos)</td><td>Capa 3 (Red)</td></tr>
+<tr><td>Tamaño</td><td>48 bits, en hexadecimal: <code>00:1A:2B:3C:4D:5E</code></td><td>IPv4: 32 bits <code>192.168.1.10</code> · IPv6: 128 bits <code>2001:db8::10</code></td></tr>
+<tr><td>¿Quién la asigna?</td><td>El fabricante (grabada en la tarjeta de red). Los primeros 24 bits (OUI) identifican al fabricante.</td><td>El administrador de red, DHCP o autoconfiguración.</td></tr>
+<tr><td>¿Cambia si me muevo de red?</td><td>No</td><td>Sí</td></tr>
+<tr><td>Alcance</td><td>Solo dentro de la red local (un “salto”)</td><td>De extremo a extremo (de origen a destino final)</td></tr>
+<tr><td>¿Quién la usa?</td><td>Switches</td><td>Routers</td></tr>
+</table></div>
+
+<div class="caja analogia"><div class="tit">🟠 Analogía: CURP y domicilio</div>
+<p>La <b>MAC</b> es como tu <b>CURP</b>: te identifica a ti y no cambia aunque te mudes. La <b>IP</b> es tu <b>domicilio</b>: indica <i>dónde</i> estás y cambia si te mudas. El cartero necesita el domicilio para llevar la carta hasta tu colonia (IP), y ya en la puerta pregunta por tu nombre (MAC) para entregártela.</p>
+</div>
+
+<div class="caja ejemplo"><div class="tit">🟢 Ejemplo: qué cambia y qué no en cada salto</div>
+<p>La PC-A (192.168.1.10) envía un paquete al servidor S (10.0.0.5) pasando por el router R1.</p>
+<div class="svgbox">
+<svg viewBox="0 0 760 210" width="760">
+  <rect x="10" y="70" width="110" height="60" rx="8" fill="#2563eb"/><text x="65" y="97" text-anchor="middle" style="fill:#fff;font-weight:700">PC-A</text><text x="65" y="117" text-anchor="middle" style="fill:#fff;font-size:11px">192.168.1.10</text>
+  <rect x="325" y="70" width="110" height="60" rx="30" fill="#1f6f5c"/><text x="380" y="97" text-anchor="middle" style="fill:#fff;font-weight:700">R1</text><text x="380" y="117" text-anchor="middle" style="fill:#fff;font-size:11px">router</text>
+  <rect x="640" y="70" width="110" height="60" rx="8" fill="#b45309"/><text x="695" y="97" text-anchor="middle" style="fill:#fff;font-weight:700">Servidor S</text><text x="695" y="117" text-anchor="middle" style="fill:#fff;font-size:11px">10.0.0.5</text>
+  <line x1="120" y1="100" x2="325" y2="100" stroke="#888" stroke-width="3"/><line x1="435" y1="100" x2="640" y2="100" stroke="#888" stroke-width="3"/>
+  <text x="222" y="30" text-anchor="middle" style="font-size:12.5px;font-weight:700">Tramo 1</text>
+  <text x="222" y="48" text-anchor="middle" style="font-size:11.5px">MAC: PC-A → R1 (G0/0)</text>
+  <text x="222" y="160" text-anchor="middle" style="font-size:11.5px">IP: 192.168.1.10 → 10.0.0.5</text>
+  <text x="537" y="30" text-anchor="middle" style="font-size:12.5px;font-weight:700">Tramo 2</text>
+  <text x="537" y="48" text-anchor="middle" style="font-size:11.5px">MAC: R1 (G0/1) → Servidor S</text>
+  <text x="537" y="160" text-anchor="middle" style="font-size:11.5px">IP: 192.168.1.10 → 10.0.0.5</text>
+  <text x="380" y="198" text-anchor="middle" style="font-size:12px;font-style:italic">Las IP se mantienen de extremo a extremo; las MAC se reescriben en cada salto.</text>
+</svg></div>
+</div>
+
+<h3>Criterios y elementos para interconectar redes</h3>
+<p>Para que dos redes se comuniquen se necesitan:</p>
+<ul>
+<li><b>Un router</b> (o switch de capa 3) con una interfaz en cada red.</li>
+<li><b>Direccionamiento coherente</b>: cada red con su propio identificador (no deben traslaparse).</li>
+<li><b>Puerta de enlace predeterminada</b> (<i>default gateway</i>) configurada en cada host: es la IP del router en esa red; a ella se envía todo lo que va “fuera” de la red local.</li>
+<li><b>Tabla de enrutamiento</b> con rutas hacia las redes remotas.</li>
+<li><b>Medio y protocolos compatibles</b> (Ethernet, seriales, fibra, etc.).</li>
+</ul>
+
+<h4>¿Cómo aprende rutas un router?</h4>
+<div class="grid3">
+  <div class="card"><h5>Directamente conectadas <span class="tag">C</span></h5><p>Las redes donde el router tiene una interfaz configurada y activa. Las aprende solo.</p></div>
+  <div class="card"><h5>Estáticas <span class="tag">S</span></h5><p>Las escribe el administrador a mano. Simples y seguras, pero no se adaptan solas si falla un enlace.</p></div>
+  <div class="card"><h5>Dinámicas <span class="tag">O</span> <span class="tag">D</span> <span class="tag">R</span></h5><p>Aprendidas por protocolos (OSPF, EIGRP, RIP). Se adaptan a cambios automáticamente.</p></div>
+</div>
+
+<h4>Factores para elegir la mejor ruta</h4>
+<ul>
+<li><b>Coincidencia más larga (longest match)</b>: si varias rutas coinciden con el destino, gana la de prefijo más largo (la más específica).</li>
+<li><b>Distancia administrativa (AD)</b>: qué tan confiable es la fuente. Menor es mejor: conectada = 0, estática = 1, EIGRP = 90, OSPF = 110, RIP = 120.</li>
+<li><b>Métrica</b>: “costo” de la ruta según el protocolo (saltos en RIP, ancho de banda en OSPF).</li>
+</ul>
+
+<div class="caja ejemplo"><div class="tit">🟢 Ejemplo: leyendo una tabla de enrutamiento</div>
+<pre><span class="p">R1#</span> show ip route
+<span class="m">Codes: C - connected, L - local, S - static, O - OSPF, * - candidate default</span>
+Gateway of last resort is 200.10.10.2 to network 0.0.0.0
+
+<span class="k">S*</span>   0.0.0.0/0 [1/0] via 200.10.10.2
+<span class="k">C</span>    192.168.1.0/24 is directly connected, GigabitEthernet0/0/0
+<span class="k">L</span>    192.168.1.1/32 is directly connected, GigabitEthernet0/0/0
+<span class="k">O</span>    172.16.0.0/16 [110/2] via 10.1.1.2, 00:12:31, Serial0/1/0</pre>
+<p>Si llega un paquete para <b>172.16.5.9</b> → coincide con la ruta OSPF → sale por Serial0/1/0 hacia 10.1.1.2.<br>
+Si llega para <b>8.8.8.8</b> → no coincide con ninguna red específica → usa la <b>ruta por defecto</b> (0.0.0.0/0) hacia 200.10.10.2 (Internet).</p>
+</div>
+<a class="volver" href="#inicio">↑ Volver al inicio</a>
+</section>
+
+<!-- ========== 3. ARP ========== -->
+<section class="tema" id="u2-arp">
+<h2 class="t">3. ARP · Protocolo de Resolución de Direcciones</h2>
+<p class="objetivo"><b>Saber:</b> Identificar qué es y cómo funciona el Protocolo de Resolución de Direcciones.</p>
+
+<div class="caja concepto"><div class="tit">🔵 Concepto</div>
+<p><b>ARP</b> (<i>Address Resolution Protocol</i>) sirve para <b>descubrir la dirección MAC</b> que corresponde a una <b>dirección IPv4 conocida</b> dentro de la misma red local. Es necesario porque, para enviar una trama Ethernet, se requiere la MAC de destino, pero las aplicaciones solo conocen la IP.</p>
+</div>
+
+<div class="caja analogia"><div class="tit">🟠 Analogía: preguntar en el salón</div>
+<p>Llegas a un salón con un paquete para “la persona con lugar 23”, pero no sabes quién es. Gritas a todos: <i>“¿Quién está en el lugar 23?”</i> (<b>broadcast</b>). Todos escuchan, pero solo Ana responde directamente: <i>“Yo, soy Ana”</i> (<b>respuesta unicast</b>). Anotas en tu libreta “lugar 23 = Ana” (<b>caché ARP</b>) para no volver a gritar la próxima vez.</p>
+</div>
+
+<h3>Funcionamiento paso a paso</h3>
+<p>PC-A (192.168.1.10, MAC <code>AA:AA:AA:AA:AA:AA</code>) quiere enviar datos a PC-B (192.168.1.20) en la misma red.</p>
+<ol class="pasos">
+<li>PC-A revisa su <b>tabla (caché) ARP</b>. ¿Ya conoce la MAC de 192.168.1.20? Si sí, la usa y termina.</li>
+<li>Si no, envía una <b>Solicitud ARP</b> en <b>broadcast</b> (MAC destino <code>FF:FF:FF:FF:FF:FF</code>): “¿Quién tiene 192.168.1.20? Responde a 192.168.1.10”.</li>
+<li>El switch reenvía la trama por todos sus puertos. Todos los equipos la reciben y comparan la IP con la suya.</li>
+<li>Solo PC-B coincide y envía una <b>Respuesta ARP</b> en <b>unicast</b>: “192.168.1.20 está en <code>BB:BB:BB:BB:BB:BB</code>”.</li>
+<li>PC-A guarda el par IP–MAC en su caché (temporalmente, unos minutos) y ya puede enviar la trama.</li>
+</ol>
+
+<div class="svgbox">
+<svg viewBox="0 0 700 250" width="700">
+  <defs><marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10z" fill="#888"/></marker></defs>
+  <rect x="20" y="20" width="130" height="40" rx="7" fill="#2563eb"/><text x="85" y="45" text-anchor="middle" style="fill:#fff;font-weight:700">PC-A .10</text>
+  <rect x="550" y="20" width="130" height="40" rx="7" fill="#15803d"/><text x="615" y="45" text-anchor="middle" style="fill:#fff;font-weight:700">PC-B .20</text>
+  <line x1="85" y1="60" x2="85" y2="240" stroke="#888" stroke-dasharray="4 4"/><line x1="615" y1="60" x2="615" y2="240" stroke="#888" stroke-dasharray="4 4"/>
+  <line x1="85" y1="100" x2="610" y2="100" stroke="#b45309" stroke-width="2.5" marker-end="url(#fl)"/>
+  <text x="350" y="92" text-anchor="middle" style="font-size:12.5px">ARP Request (broadcast FF:FF:FF:FF:FF:FF): ¿Quién tiene 192.168.1.20?</text>
+  <line x1="615" y1="150" x2="90" y2="150" stroke="#15803d" stroke-width="2.5" marker-end="url(#fl)"/>
+  <text x="350" y="142" text-anchor="middle" style="font-size:12.5px">ARP Reply (unicast): 192.168.1.20 es BB:BB:BB:BB:BB:BB</text>
+  <line x1="85" y1="205" x2="610" y2="205" stroke="#2563eb" stroke-width="2.5" marker-end="url(#fl)"/>
+  <text x="350" y="197" text-anchor="middle" style="font-size:12.5px">Trama con los datos (MAC destino ya conocida)</text>
+</svg></div>
+
+<h3>¿Y si el destino está en otra red?</h3>
+<p>PC-A <b>no</b> pregunta por la MAC del destino remoto (el broadcast no cruza routers). Primero compara la IP destino con su máscara; si es de otra red, hace ARP por la <b>MAC de su puerta de enlace</b> (el router) y le entrega la trama a él.</p>
+
+<div class="caja ejemplo"><div class="tit">🟢 Ejemplo: ver la tabla ARP</div>
+<pre><span class="m">Windows (cmd):</span>
+<span class="p">C:\&gt;</span> arp -a
+Interfaz: 192.168.1.10 --- 0x7
+  Dirección de Internet    Dirección física      Tipo
+  192.168.1.1              00-1d-60-aa-01-01     dinámico
+  192.168.1.20             bb-bb-bb-bb-bb-bb     dinámico
+  192.168.1.255            ff-ff-ff-ff-ff-ff     estático
+
+<span class="m">Router Cisco:</span>
+<span class="p">R1#</span> show ip arp
+<span class="p">R1#</span> clear arp-cache      <span class="m">! borra la caché</span></pre>
+</div>
+
+<div class="caja alerta"><div class="tit">🔴 Cuidado: problemas de ARP</div>
+<ul>
+<li><b>Exceso de broadcasts</b>: en redes muy grandes, muchos ARP saturan la red → solución: dividir en subredes/VLAN.</li>
+<li><b>ARP spoofing (envenenamiento ARP)</b>: un atacante responde “yo soy el router” con su MAC, y así intercepta el tráfico (ataque <i>man-in-the-middle</i>). Se mitiga con <i>Dynamic ARP Inspection</i> en switches.</li>
+</ul>
+</div>
+<div class="caja clave"><div class="tit">🟣 Para recordar</div>
+<p>ARP es exclusivo de <b>IPv4</b>. En <b>IPv6</b> esta función la hace <b>NDP</b> (<i>Neighbor Discovery Protocol</i>) con mensajes ICMPv6 <b>Neighbor Solicitation</b> y <b>Neighbor Advertisement</b>, usando <b>multicast</b> en lugar de broadcast.</p>
+</div>
+<a class="volver" href="#inicio">↑ Volver al inicio</a>
+</section>
+
+<!-- ========== 4. CONFIGURACIÓN DE ROUTERS ========== -->
+<section class="tema" id="u2-router">
+<h2 class="t">4. Configuración básica de ruteadores</h2>
+<p class="objetivo"><b>Saber:</b> Identificar los modos de configuración de un router.</p>
+
+<div class="caja concepto"><div class="tit">🔵 Concepto</div>
+<p>El IOS de Cisco organiza los comandos en <b>modos jerárquicos</b>. Cada modo tiene un <b>indicador (prompt)</b> distinto y solo permite ciertos comandos. Así se evita que alguien cambie la configuración por error.</p>
+</div>
+
+<div class="caja analogia"><div class="tit">🟠 Analogía: un edificio con llaves</div>
+<p>El modo usuario es la <b>recepción</b>: puedes mirar, pero no tocar. El modo privilegiado es la <b>oficina del gerente</b> (necesitas llave): ves todo y puedes guardar o reiniciar. El modo de configuración global es el <b>cuarto de máquinas</b>: ahí cambias cosas que afectan a todo el edificio. Y los submodos (interfaz, línea) son <b>cuartos específicos</b> dentro del cuarto de máquinas.</p>
+</div>
+
+<h3>Modos del IOS</h3>
+<div class="tabla-wrap"><table>
+<tr><th>Modo</th><th>Prompt</th><th>¿Cómo entro?</th><th>¿Qué puedo hacer?</th></tr>
+<tr><td><b>EXEC usuario</b></td><td class="mono">R1&gt;</td><td>Al conectarse</td><td>Comandos básicos de consulta: <code>ping</code>, <code>show version</code> (limitado).</td></tr>
+<tr><td><b>EXEC privilegiado</b></td><td class="mono">R1#</td><td><code>enable</code></td><td>Todos los <code>show</code>, <code>copy</code>, <code>reload</code>, <code>debug</code>.</td></tr>
+<tr><td><b>Configuración global</b></td><td class="mono">R1(config)#</td><td><code>configure terminal</code></td><td>Cambios que afectan a todo el equipo: hostname, contraseñas, rutas.</td></tr>
+<tr><td>Config. de interfaz</td><td class="mono">R1(config-if)#</td><td><code>interface g0/0/0</code></td><td>IP de la interfaz, descripción, encender/apagar.</td></tr>
+<tr><td>Config. de línea</td><td class="mono">R1(config-line)#</td><td><code>line console 0</code> / <code>line vty 0 4</code></td><td>Contraseñas y acceso por consola o remoto (Telnet/SSH).</td></tr>
+<tr><td>Config. de router</td><td class="mono">R1(config-router)#</td><td><code>router ospf 1</code></td><td>Configurar protocolos de enrutamiento dinámico.</td></tr>
+</table></div>
+<p><b>Para moverse:</b> <code>exit</code> regresa un nivel · <code>end</code> o <kbd>Ctrl</kbd>+<kbd>Z</kbd> regresa directo al modo privilegiado · <code>disable</code> baja de privilegiado a usuario.</p>
+
+<div class="caja ejemplo"><div class="tit">🟢 Ejemplo completo: configuración básica de R1</div>
+<pre><span class="p">Router&gt;</span> enable
+<span class="p">Router#</span> configure terminal
+<span class="p">Router(config)#</span> hostname R1                         <span class="m">! nombre del equipo</span>
+<span class="p">R1(config)#</span> enable secret Cl4ve$ecreta             <span class="m">! protege el modo privilegiado (cifrada)</span>
+<span class="p">R1(config)#</span> no ip domain-lookup                  <span class="m">! evita esperas por errores de tecleo</span>
+<span class="p">R1(config)#</span> banner motd #Acceso solo a personal autorizado#
+<span class="p">R1(config)#</span> line console 0
+<span class="p">R1(config-line)#</span> password consola123
+<span class="p">R1(config-line)#</span> login
+<span class="p">R1(config-line)#</span> exit
+<span class="p">R1(config)#</span> line vty 0 4                         <span class="m">! acceso remoto</span>
+<span class="p">R1(config-line)#</span> password remoto123
+<span class="p">R1(config-line)#</span> login
+<span class="p">R1(config-line)#</span> transport input ssh             <span class="m">! solo SSH (más seguro que Telnet)</span>
+<span class="p">R1(config-line)#</span> exit
+<span class="p">R1(config)#</span> service password-encryption          <span class="m">! cifra contraseñas en texto plano</span>
+
+<span class="c">! ---- Interfaz LAN con IPv4 e IPv6 ----</span>
+<span class="p">R1(config)#</span> ipv6 unicast-routing                 <span class="m">! habilita el enrutamiento IPv6</span>
+<span class="p">R1(config)#</span> interface GigabitEthernet0/0/0
+<span class="p">R1(config-if)#</span> description LAN Laboratorio
+<span class="p">R1(config-if)#</span> ip address 192.168.10.1 255.255.255.0
+<span class="p">R1(config-if)#</span> ipv6 address 2001:db8:acad:10::1/64
+<span class="p">R1(config-if)#</span> ipv6 address fe80::1 link-local
+<span class="p">R1(config-if)#</span> no shutdown                       <span class="m">! las interfaces de router vienen apagadas</span>
+<span class="p">R1(config-if)#</span> end
+
+<span class="c">! ---- Guardar y verificar ----</span>
+<span class="p">R1#</span> copy running-config startup-config         <span class="m">! RAM → NVRAM</span>
+<span class="p">R1#</span> show ip interface brief
+<span class="p">R1#</span> show ipv6 interface brief
+<span class="p">R1#</span> show running-config</pre>
+</div>
+
+<div class="caja alerta"><div class="tit">🔴 Errores comunes</div>
+<ul>
+<li>Olvidar <code>no shutdown</code>: la interfaz aparece como <i>administratively down</i>.</li>
+<li>No guardar con <code>copy running-config startup-config</code>: al reiniciar se pierde todo (la RAM es volátil).</li>
+<li>Configurar la IP del router en la misma red pero con distinta máscara que los hosts.</li>
+</ul>
+</div>
+
+<h4>Atajos útiles de la CLI</h4>
+<div class="grid3">
+<div class="card"><p><kbd>?</kbd> muestra ayuda de comandos disponibles.</p></div>
+<div class="card"><p><kbd>Tab</kbd> autocompleta el comando.</p></div>
+<div class="card"><p>Abreviaturas: <code>conf t</code>, <code>int g0/0/0</code>, <code>sh ip int br</code>, <code>wr</code>.</p></div>
+</div>
+<a class="volver" href="#inicio">↑ Volver al inicio</a>
+</section>
+
+<!-- ========== 5. IPv4 ========== -->
+<section class="tema" id="u2-ipv4">
+<h2 class="t">5. Direccionamiento IPv4</h2>
+<p class="objetivo"><b>Saber:</b> Identificar las características de una dirección IPv4 y su relación con la máscara de subred. Identificar los tipos de direcciones IPv4. Describir el proceso de segmentación de la red y de división de redes IPv4 en subredes. Identificar las características de las máscaras de subred de longitud variable. Describir el proceso de planificación de direcciones de red IPv4.</p>
+
+<h3 id="ipv4-binario">5.1 Estructura de una dirección IPv4</h3>
+<div class="caja concepto"><div class="tit">🔵 Concepto</div>
+<p>Una dirección IPv4 tiene <b>32 bits</b>, divididos en <b>4 octetos</b> de 8 bits. Para que los humanos la leamos, cada octeto se escribe en decimal (0 a 255) separado por puntos: <b>notación decimal punteada</b>.</p>
+<p>Toda dirección tiene dos partes: la <b>porción de red</b> (identifica la red, igual para todos los equipos de esa red) y la <b>porción de host</b> (identifica a cada equipo dentro de la red).</p>
+</div>
+
+<div class="caja analogia"><div class="tit">🟠 Analogía: el número telefónico</div>
+<p>En el número <b>771-555-1234</b>, la lada <b>771</b> indica la ciudad (porción de <b>red</b>) y <b>555-1234</b> indica la casa (porción de <b>host</b>). Todos los teléfonos de Pachuca comparten la lada; lo que cambia es el resto. La <b>máscara de subred</b> es la regla que dice “cuántos dígitos son lada”.</p>
+</div>
+
+<h4>Conversión decimal ↔ binario</h4>
+<p>Cada bit de un octeto tiene un valor posicional. Para convertir, se suman los valores donde hay un 1:</p>
+<div class="tabla-wrap"><table style="text-align:center">
+<tr><th>Bit</th><th>7</th><th>6</th><th>5</th><th>4</th><th>3</th><th>2</th><th>1</th><th>0</th></tr>
+<tr><td><b>Valor</b></td><td>128</td><td>64</td><td>32</td><td>16</td><td>8</td><td>4</td><td>2</td><td>1</td></tr>
+<tr><td><b>75 =</b></td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>1</td></tr>
+</table></div>
+<p>75 = 64 + 8 + 2 + 1 → <code>01001011</code>. Método rápido: ¿cabe 128 en 75? No → 0. ¿Cabe 64? Sí → 1, sobran 11. ¿32? No. ¿16? No. ¿8? Sí → sobran 3. ¿4? No. ¿2? Sí → sobra 1. ¿1? Sí.</p>
+<div class="binario">192.168.10.75  =  <span class="n1">11000000</span>.<span class="n2">10101000</span>.<span class="n3">00001010</span>.<span class="n4">01001011</span>
+                    192      168        10       75</div>
+
+<h3 id="ipv4-mascara">5.2 Máscara de subred y la operación AND</h3>
+<div class="caja concepto"><div class="tit">🔵 Concepto</div>
+<p>La <b>máscara de subred</b> es otro número de 32 bits donde los <b>1</b> marcan la porción de red y los <b>0</b> la porción de host. Los unos siempre van juntos a la izquierda. Se escribe en decimal (<code>255.255.255.0</code>) o como <b>prefijo</b>, contando los unos: <code>/24</code>.</p>
+</div>
+<div class="bits">
+  <div class="f1" style="flex:24">11111111.11111111.11111111<small>24 bits de RED (/24)</small></div>
+  <div class="f3" style="flex:8">00000000<small>8 bits de HOST</small></div>
+</div>
+
+<h4>Tabla de referencia de máscaras (último octeto)</h4>
+<div class="tabla-wrap"><table>
+<tr><th>Prefijo</th><th>Máscara</th><th>Último octeto en binario</th><th>Bits de host</th><th>Hosts utilizables (2<sup>h</sup> − 2)</th><th>Salto (bloque)</th></tr>
+<tr><td>/24</td><td class="mono">255.255.255.0</td><td class="mono">00000000</td><td>8</td><td>254</td><td>256</td></tr>
+<tr><td>/25</td><td class="mono">255.255.255.128</td><td class="mono">10000000</td><td>7</td><td>126</td><td>128</td></tr>
+<tr><td>/26</td><td class="mono">255.255.255.192</td><td class="mono">11000000</td><td>6</td><td>62</td><td>64</td></tr>
+<tr><td>/27</td><td class="mono">255.255.255.224</td><td class="mono">11100000</td><td>5</td><td>30</td><td>32</td></tr>
+<tr><td>/28</td><td class="mono">255.255.255.240</td><td class="mono">11110000</td><td>4</td><td>14</td><td>16</td></tr>
+<tr><td>/29</td><td class="mono">255.255.255.248</td><td class="mono">11111000</td><td>3</td><td>6</td><td>8</td></tr>
+<tr><td>/30</td><td class="mono">255.255.255.252</td><td class="mono">11111100</td><td>2</td><td>2</td><td>4</td></tr>
+</table></div>
+<p>Se restan 2 porque en cada red hay dos direcciones reservadas: la de <b>red</b> (todos los bits de host en 0) y la de <b>broadcast</b> (todos los bits de host en 1).</p>
+
+<h4>¿Cómo sabe un equipo a qué red pertenece? → Operación AND</h4>
+<p>El equipo hace un <b>AND bit a bit</b> entre su IP y su máscara. Regla del AND: <b>solo 1 AND 1 = 1</b>; cualquier otra combinación da 0.</p>
+<div class="caja ejemplo"><div class="tit">🟢 Ejemplo: IP 192.168.10.75 con máscara /26 (255.255.255.192)</div>
+<div class="binario">IP        192.168.10.75   →  11000000.10101000.00001010.<span class="n1">01</span><span class="n3">001011</span>
+Máscara   255.255.255.192 →  11111111.11111111.11111111.<span class="n1">11</span><span class="n3">000000</span>
+          ───────────────────────────────────────────────────────── AND
+Red       192.168.10.64   →  11000000.10101000.00001010.<span class="n1">01</span><span class="n3">000000</span></div>
+<ul>
+<li><b>Dirección de red:</b> 192.168.10.64 (bits de host en 0)</li>
+<li><b>Broadcast:</b> 192.168.10.127 (bits de host en 1 → <code>01<b>111111</b></code> = 127)</li>
+<li><b>Rango de hosts:</b> 192.168.10.65 a 192.168.10.126 (62 hosts)</li>
+</ul>
+<p>Si PC-A (192.168.10.75/26) quiere hablar con 192.168.10.130, calcula que .130 está en la red .128 → <b>otra red</b> → envía el paquete a su puerta de enlace.</p>
+</div>
+
+<h3 id="ipv4-tipos">5.3 Tipos de direcciones IPv4</h3>
+<h4>Según el destino de la comunicación</h4>
+<div class="grid3">
+<div class="card"><h5>Unicast (uno a uno)</h5><p>De un host a otro host específico. Ej.: tu PC a un servidor web.</p></div>
+<div class="card"><h5>Broadcast (uno a todos)</h5><p>A todos los equipos de la red local. Ej.: 192.168.10.255 en una /24, o 255.255.255.255. Los routers <b>no</b> lo reenvían.</p></div>
+<div class="card"><h5>Multicast (uno a un grupo)</h5><p>A un grupo suscrito. Rango 224.0.0.0 – 239.255.255.255. Ej.: 224.0.0.5 (routers OSPF).</p></div>
+</div>
+<div class="caja analogia"><div class="tit">🟠 Analogía</div>
+<p><b>Unicast</b> = mensaje privado de WhatsApp. <b>Broadcast</b> = aviso por el altavoz de la escuela: lo oyen todos. <b>Multicast</b> = mensaje al grupo de WhatsApp “Redes 3°A”: solo lo reciben los que están en el grupo.</p>
+</div>
+
+<h4>Públicas y privadas</h4>
+<p>Las direcciones <b>públicas</b> son únicas en todo Internet y las asigna el proveedor (ISP). Las <b>privadas</b> (RFC 1918) se usan libremente dentro de casas, escuelas y empresas; <b>no se enrutan en Internet</b>, por lo que el router usa <b>NAT</b> para traducirlas a una pública al salir.</p>
+<div class="tabla-wrap"><table>
+<tr><th>Bloque privado</th><th>Rango</th><th>Uso típico</th></tr>
+<tr><td class="mono">10.0.0.0/8</td><td class="mono">10.0.0.0 – 10.255.255.255</td><td>Empresas grandes, campus</td></tr>
+<tr><td class="mono">172.16.0.0/12</td><td class="mono">172.16.0.0 – 172.31.255.255</td><td>Empresas medianas</td></tr>
+<tr><td class="mono">192.168.0.0/16</td><td class="mono">192.168.0.0 – 192.168.255.255</td><td>Hogares, oficinas pequeñas</td></tr>
+</table></div>
+
+<h4>Direcciones especiales</h4>
+<div class="tabla-wrap"><table>
+<tr><th>Dirección / bloque</th><th>Nombre</th><th>Para qué sirve</th></tr>
+<tr><td class="mono">127.0.0.0/8 (127.0.0.1)</td><td>Loopback</td><td>El equipo se habla a sí mismo. <code>ping 127.0.0.1</code> prueba que TCP/IP está instalado.</td></tr>
+<tr><td class="mono">169.254.0.0/16</td><td>APIPA / enlace local</td><td>Windows se la asigna solo cuando no encuentra servidor DHCP. ¡Señal de problema!</td></tr>
+<tr><td class="mono">0.0.0.0</td><td>Dirección no especificada</td><td>“Esta red / ningún host”; también ruta por defecto 0.0.0.0/0.</td></tr>
+<tr><td class="mono">100.64.0.0/10</td><td>CGNAT</td><td>Usada por ISP para compartir una IP pública entre muchos clientes.</td></tr>
+<tr><td class="mono">192.0.2.0/24</td><td>TEST-NET-1</td><td>Para documentación y ejemplos.</td></tr>
+</table></div>
+
+<h4>Direccionamiento por clases (histórico)</h4>
+<p>Originalmente las redes se dividían por <b>clases</b>, según los primeros bits. Hoy se usa <b>CIDR</b> (sin clases, con cualquier prefijo), pero las clases siguen apareciendo en exámenes y en la terminología.</p>
+<div class="tabla-wrap"><table>
+<tr><th>Clase</th><th>Primer octeto</th><th>Bits iniciales</th><th>Máscara por defecto</th><th>Redes / hosts por red</th></tr>
+<tr><td>A</td><td>1 – 126</td><td class="mono">0…</td><td>/8 (255.0.0.0)</td><td>126 redes / 16,777,214 hosts</td></tr>
+<tr><td>B</td><td>128 – 191</td><td class="mono">10…</td><td>/16 (255.255.0.0)</td><td>16,384 redes / 65,534 hosts</td></tr>
+<tr><td>C</td><td>192 – 223</td><td class="mono">110…</td><td>/24 (255.255.255.0)</td><td>2,097,152 redes / 254 hosts</td></tr>
+<tr><td>D</td><td>224 – 239</td><td class="mono">1110…</td><td>—</td><td>Multicast</td></tr>
+<tr><td>E</td><td>240 – 255</td><td class="mono">1111…</td><td>—</td><td>Experimental</td></tr>
+</table></div>
+
+<h3>5.4 Segmentación de la red: ¿por qué dividir?</h3>
+<div class="caja concepto"><div class="tit">🔵 Concepto</div>
+<p><b>Segmentar</b> es dividir una red grande en redes más pequeñas (<b>subredes</b>). Cada subred es su propio <b>dominio de broadcast</b>: los broadcasts (como ARP) no salen de ella.</p>
+</div>
+<div class="grid2">
+<div class="card"><h5>✅ Beneficios</h5><p>• Menos tráfico de broadcast → mejor rendimiento.<br>• Seguridad: se controla qué subred habla con cuál.<br>• Organización: una subred por área, piso o laboratorio.<br>• Aprovechamiento de direcciones.<br>• Los problemas quedan aislados.</p></div>
+<div class="card"><h5>🟠 Analogía: la escuela y sus salones</h5><p>Si toda la escuela estuviera en un solo salón gigante, cuando alguien hablara todos se interrumpirían. Dividirla en salones (subredes) hace que cada grupo trabaje sin molestar a los demás, y los pasillos (router) conectan los salones.</p></div>
+</div>
+
+<h3 id="ipv4-subredes">5.5 División en subredes paso a paso (FLSM)</h3>
+<div class="caja concepto"><div class="tit">🔵 Concepto</div>
+<p>Para crear subredes se <b>“piden prestados” bits de la porción de host</b> y se convierten en bits de subred. Con FLSM (<i>Fixed Length Subnet Mask</i>) todas las subredes quedan del mismo tamaño.</p>
+<ul>
+<li><b>Número de subredes</b> = 2<sup>n</sup> (n = bits prestados)</li>
+<li><b>Hosts por subred</b> = 2<sup>h</sup> − 2 (h = bits que quedan para host)</li>
+<li><b>Salto</b> = 256 − valor de la máscara en el octeto “interesante”</li>
+</ul>
+</div>
+
+<div class="caja ejemplo"><div class="tit">🟢 Ejemplo 1 · 192.168.10.0/24 → 4 laboratorios</div>
+<p><b>Problema:</b> La universidad tiene la red 192.168.10.0/24 y necesita <b>4 subredes</b>, una por laboratorio.</p>
+<ol class="pasos">
+<li><b>¿Cuántos bits pedir prestados?</b> 2<sup>n</sup> ≥ 4 → n = 2 (2<sup>2</sup> = 4).</li>
+<li><b>Nuevo prefijo:</b> /24 + 2 = <b>/26</b> → máscara <b>255.255.255.192</b>.</li>
+<li><b>Hosts por subred:</b> quedan 32 − 26 = 6 bits → 2<sup>6</sup> − 2 = <b>62 hosts</b>.</li>
+<li><b>Salto:</b> 256 − 192 = <b>64</b>. Las subredes empiezan en .0, .64, .128, .192.</li>
+</ol>
+<p><b>Así se ve en binario</b> (último octeto). Los 2 bits prestados <span class="n1">azules</span> forman el número de subred; los 6 bits <span class="n3">naranjas</span> son para hosts:</p>
+<div class="binario">Subred 0:  192.168.10.<span class="n1">00</span><span class="n3">000000</span>  =  192.168.10.0
+Subred 1:  192.168.10.<span class="n1">01</span><span class="n3">000000</span>  =  192.168.10.64
+Subred 2:  192.168.10.<span class="n1">10</span><span class="n3">000000</span>  =  192.168.10.128
+Subred 3:  192.168.10.<span class="n1">11</span><span class="n3">000000</span>  =  192.168.10.192</div>
+<div class="tabla-wrap"><table>
+<tr><th>Subred</th><th>Dirección de red</th><th>Primer host (gateway)</th><th>Último host</th><th>Broadcast</th><th>Asignada a</th></tr>
+<tr><td>0</td><td class="mono">192.168.10.0/26</td><td class="mono">192.168.10.1</td><td class="mono">192.168.10.62</td><td class="mono">192.168.10.63</td><td>Laboratorio A</td></tr>
+<tr><td>1</td><td class="mono">192.168.10.64/26</td><td class="mono">192.168.10.65</td><td class="mono">192.168.10.126</td><td class="mono">192.168.10.127</td><td>Laboratorio B</td></tr>
+<tr><td>2</td><td class="mono">192.168.10.128/26</td><td class="mono">192.168.10.129</td><td class="mono">192.168.10.190</td><td class="mono">192.168.10.191</td><td>Laboratorio C</td></tr>
+<tr><td>3</td><td class="mono">192.168.10.192/26</td><td class="mono">192.168.10.193</td><td class="mono">192.168.10.254</td><td class="mono">192.168.10.255</td><td>Laboratorio D</td></tr>
+</table></div>
+<p><b>Hosts de la subred 1 (Laboratorio B):</b></p>
+<div class="binario">192.168.10.64    → <span class="n1">01</span><span class="n3">000000</span>  Dirección de RED (no se asigna)
+192.168.10.65    → <span class="n1">01</span><span class="n3">000001</span>  Host 1  → Gateway del router
+192.168.10.66    → <span class="n1">01</span><span class="n3">000010</span>  Host 2  → PC-01
+192.168.10.67    → <span class="n1">01</span><span class="n3">000011</span>  Host 3  → PC-02
+   …                …
+192.168.10.126   → <span class="n1">01</span><span class="n3">111110</span>  Host 62 → último host
+192.168.10.127   → <span class="n1">01</span><span class="n3">111111</span>  BROADCAST (no se asigna)</div>
+</div>
+
+<div class="caja ejemplo"><div class="tit">🟢 Ejemplo 2 · 172.16.0.0/16 → 10 departamentos</div>
+<ol class="pasos">
+<li>2<sup>n</sup> ≥ 10 → n = 4 (2<sup>4</sup> = 16 subredes; sobran 6 para crecer).</li>
+<li>Nuevo prefijo: /16 + 4 = <b>/20</b> → máscara <b>255.255.240.0</b> (el octeto interesante es el <b>tercero</b>: 11110000 = 240).</li>
+<li>Hosts: 32 − 20 = 12 bits → 2<sup>12</sup> − 2 = <b>4,094 hosts</b> por subred.</li>
+<li>Salto: 256 − 240 = <b>16</b> en el tercer octeto.</li>
+</ol>
+<div class="binario">Tercer octeto:  <span class="n1">0000</span><span class="n3">0000</span> = 0    <span class="n1">0001</span><span class="n3">0000</span> = 16    <span class="n1">0010</span><span class="n3">0000</span> = 32  …  <span class="n1">1111</span><span class="n3">0000</span> = 240</div>
+<div class="tabla-wrap"><table>
+<tr><th>#</th><th>Red</th><th>Primer host</th><th>Último host</th><th>Broadcast</th></tr>
+<tr><td>0</td><td class="mono">172.16.0.0/20</td><td class="mono">172.16.0.1</td><td class="mono">172.16.15.254</td><td class="mono">172.16.15.255</td></tr>
+<tr><td>1</td><td class="mono">172.16.16.0/20</td><td class="mono">172.16.16.1</td><td class="mono">172.16.31.254</td><td class="mono">172.16.31.255</td></tr>
+<tr><td>2</td><td class="mono">172.16.32.0/20</td><td class="mono">172.16.32.1</td><td class="mono">172.16.47.254</td><td class="mono">172.16.47.255</td></tr>
+<tr><td>3</td><td class="mono">172.16.48.0/20</td><td class="mono">172.16.48.1</td><td class="mono">172.16.63.254</td><td class="mono">172.16.63.255</td></tr>
+<tr><td>…</td><td colspan="4" style="text-align:center">(de 16 en 16)</td></tr>
+<tr><td>15</td><td class="mono">172.16.240.0/20</td><td class="mono">172.16.240.1</td><td class="mono">172.16.255.254</td><td class="mono">172.16.255.255</td></tr>
+</table></div>
+<p>Observa que el rango de hosts <b>cruza octetos</b>: en la subred 0 van de 172.16.0.1 hasta 172.16.15.254 (incluye 172.16.1.0, 172.16.2.200, etc., que son hosts válidos).</p>
+</div>
+
+<div class="caja ejemplo"><div class="tit">🟢 Ejemplo 3 · Partiendo del número de hosts</div>
+<p><b>Problema:</b> Con 192.168.50.0/24 se necesitan subredes de <b>al menos 50 hosts</b>.</p>
+<p>2<sup>h</sup> − 2 ≥ 50 → h = 6 (62 hosts). Prefijo = 32 − 6 = <b>/26</b>. Bits prestados = 26 − 24 = 2 → <b>4 subredes</b>: 192.168.50.0, .64, .128 y .192.</p>
+</div>
+
+<h3 id="ipv4-vlsm">5.6 VLSM · Máscaras de subred de longitud variable</h3>
+<div class="caja concepto"><div class="tit">🔵 Concepto</div>
+<p>Con FLSM todas las subredes son iguales, y eso <b>desperdicia direcciones</b>: un enlace entre dos routers solo necesita 2 IP, pero con /26 le daríamos 62. <b>VLSM</b> permite usar <b>una máscara diferente para cada subred</b>, según el número de hosts que necesita. Es como “subdividir una subred”.</p>
+</div>
+<div class="caja analogia"><div class="tit">🟠 Analogía: cortar una pizza para invitados distintos</div>
+<p>Con FLSM cortas la pizza en 8 rebanadas iguales aunque uno coma mucho y otro casi nada. Con VLSM cortas a la medida: una rebanada grande para quien tiene más hambre, y rebanadas pequeñas para los demás. Regla de oro: <b>primero se sirve al que necesita más</b>.</p>
+</div>
+
+<div class="caja ejemplo"><div class="tit">🟢 Ejemplo VLSM · 192.168.20.0/24</div>
+<p><b>Necesidades:</b> Ventas 100 hosts · Laboratorio 50 · Administración 25 · Dirección 10 · 2 enlaces WAN entre routers (2 hosts c/u).</p>
+<ol class="pasos">
+<li><b>Ordenar de mayor a menor</b> número de hosts.</li>
+<li>Para cada uno, buscar el <b>menor bloque</b> donde quepa (2<sup>h</sup> − 2 ≥ hosts).</li>
+<li>Asignar empezando en la primera dirección libre; la siguiente subred empieza justo después del broadcast de la anterior.</li>
+</ol>
+<div class="tabla-wrap"><table>
+<tr><th>Área</th><th>Hosts req.</th><th>Prefijo (hosts útiles)</th><th>Red</th><th>Rango de hosts</th><th>Broadcast</th><th>Máscara</th></tr>
+<tr><td>Ventas</td><td>100</td><td>/25 (126)</td><td class="mono">192.168.20.0</td><td class="mono">.1 – .126</td><td class="mono">.127</td><td class="mono">255.255.255.128</td></tr>
+<tr><td>Laboratorio</td><td>50</td><td>/26 (62)</td><td class="mono">192.168.20.128</td><td class="mono">.129 – .190</td><td class="mono">.191</td><td class="mono">255.255.255.192</td></tr>
+<tr><td>Administración</td><td>25</td><td>/27 (30)</td><td class="mono">192.168.20.192</td><td class="mono">.193 – .222</td><td class="mono">.223</td><td class="mono">255.255.255.224</td></tr>
+<tr><td>Dirección</td><td>10</td><td>/28 (14)</td><td class="mono">192.168.20.224</td><td class="mono">.225 – .238</td><td class="mono">.239</td><td class="mono">255.255.255.240</td></tr>
+<tr><td>WAN 1 (R1–R2)</td><td>2</td><td>/30 (2)</td><td class="mono">192.168.20.240</td><td class="mono">.241 – .242</td><td class="mono">.243</td><td class="mono">255.255.255.252</td></tr>
+<tr><td>WAN 2 (R1–R3)</td><td>2</td><td>/30 (2)</td><td class="mono">192.168.20.244</td><td class="mono">.245 – .246</td><td class="mono">.247</td><td class="mono">255.255.255.252</td></tr>
+<tr><td><i>Libre</i></td><td>—</td><td>/29</td><td class="mono">192.168.20.248</td><td class="mono">.249 – .254</td><td class="mono">.255</td><td><i>reserva para crecimiento</i></td></tr>
+</table></div>
+<p>Representación del bloque /24 (256 direcciones):</p>
+<div class="bits">
+  <div class="f1" style="flex:128">.0 – .127<small>Ventas /25</small></div>
+  <div class="f2" style="flex:64">.128 – .191<small>Lab /26</small></div>
+  <div class="f3" style="flex:32">.192–.223<small>Admin /27</small></div>
+  <div class="f4" style="flex:16">.224<small>/28</small></div>
+  <div class="f5" style="flex:8">W1</div>
+  <div class="f5" style="flex:8">W2</div>
+  <div style="flex:8;background:#888">↺</div>
+</div>
+<p>Con FLSM (/25 para que quepan 100) solo habríamos tenido 2 subredes. Con VLSM acomodamos <b>6 subredes y aún sobra espacio</b>.</p>
+</div>
+
+<h3 id="ipv4-plan">5.7 Planificación de direcciones IPv4</h3>
+<p>Un buen plan de direccionamiento evita conflictos y facilita el mantenimiento. Pasos recomendados:</p>
+<ol class="pasos">
+<li><b>Levantar requerimientos:</b> cuántas áreas/VLAN, cuántos hosts en cada una y su <b>crecimiento esperado</b> (se recomienda dejar 20 – 30% extra).</li>
+<li><b>Elegir el bloque</b> (normalmente privado: 10.x, 172.16.x o 192.168.x).</li>
+<li><b>Calcular subredes</b> con VLSM, de mayor a menor.</li>
+<li><b>Definir convenciones dentro de cada subred</b> (ver tabla).</li>
+<li><b>Documentar</b> todo en una tabla de direccionamiento y en el diagrama de topología.</li>
+</ol>
+<div class="tabla-wrap"><table>
+<tr><th>Tipo de dispositivo</th><th>Forma de asignación</th><th>Convención sugerida (subred .128/26)</th></tr>
+<tr><td>Gateway (router)</td><td>Estática</td><td class="mono">Primera utilizable: .129</td></tr>
+<tr><td>Switches administrables, AP</td><td>Estática</td><td class="mono">.130 – .135</td></tr>
+<tr><td>Servidores e impresoras</td><td>Estática o reservada en DHCP</td><td class="mono">.136 – .145</td></tr>
+<tr><td>PCs, laptops, celulares</td><td>DHCP dinámico</td><td class="mono">.146 – .190</td></tr>
+</table></div>
+
+<div class="caja ejemplo"><div class="tit">🟢 Tabla de direccionamiento (documentación)</div>
+<div class="tabla-wrap"><table>
+<tr><th>Dispositivo</th><th>Interfaz</th><th>Dirección IP</th><th>Máscara</th><th>Gateway</th></tr>
+<tr><td>R1</td><td>G0/0/0</td><td class="mono">192.168.20.1</td><td class="mono">255.255.255.128</td><td>N/A</td></tr>
+<tr><td>R1</td><td>G0/0/1</td><td class="mono">192.168.20.129</td><td class="mono">255.255.255.192</td><td>N/A</td></tr>
+<tr><td>R1</td><td>S0/1/0</td><td class="mono">192.168.20.241</td><td class="mono">255.255.255.252</td><td>N/A</td></tr>
+<tr><td>R2</td><td>S0/1/0</td><td class="mono">192.168.20.242</td><td class="mono">255.255.255.252</td><td>N/A</td></tr>
+<tr><td>PC-Ventas01</td><td>NIC</td><td class="mono">192.168.20.10</td><td class="mono">255.255.255.128</td><td class="mono">192.168.20.1</td></tr>
+<tr><td>PC-Lab01</td><td>NIC</td><td class="mono">192.168.20.150</td><td class="mono">255.255.255.192</td><td class="mono">192.168.20.129</td></tr>
+</table></div>
+</div>
+
+<!-- Calculadora IPv4 -->
+<div class="tool" id="calc-ipv4">
+<h4>🧮 Calculadora de subredes IPv4</h4>
+<p style="margin-top:0;font-size:14.5px">Escribe una red y el número de subredes que necesitas. Verás cada subred con su rango de hosts. Prueba con los ejemplos de arriba.</p>
+<div class="fila">
+  <div><label for="v4red">Red / prefijo</label><input id="v4red" value="192.168.10.0/24"></div>
+  <div><label for="v4n">Subredes requeridas</label><input id="v4n" type="number" min="1" value="4"></div>
+  <div style="flex:0 0 auto"><button onclick="calcV4()">Calcular</button></div>
+</div>
+<div class="salida" id="v4out"></div>
+<hr style="border:0;border-top:1px dashed var(--line);margin:18px 0">
+<h4>🧮 Analizar una dirección (AND)</h4>
+<div class="fila">
+  <div><label for="v4ip">Dirección IP / prefijo</label><input id="v4ip" value="192.168.10.75/26"></div>
+  <div style="flex:0 0 auto"><button onclick="anaV4()">Analizar</button></div>
+</div>
+<div class="salida" id="v4ana"></div>
+</div>
+<a class="volver" href="#inicio">↑ Volver al inicio</a>
+</section>
+
+<!-- ========== 6. IPv6 ========== -->
+<section class="tema" id="u2-ipv6">
+<h2 class="t">6. Direccionamiento IPv6</h2>
+<p class="objetivo"><b>Saber:</b> Identificar las características de una dirección IPv6 y su relación con el prefijo de red. Identificar los tipos de direcciones IPv6. Describir los servicios “stateful” y “stateless” en direcciones IPv6. Describir el proceso de división de redes IPv6 en subredes.</p>
+
+<div class="caja concepto"><div class="tit">🔵 ¿Por qué IPv6?</div>
+<p>IPv4 tiene ~4,300 millones de direcciones y ya se agotaron (LACNIC entregó sus últimos bloques en 2020). Se “parchó” con NAT y direcciones privadas, pero eso complica la comunicación extremo a extremo. <b>IPv6</b> usa <b>128 bits</b>:</p>
+<p style="font-family:Consolas,monospace;font-size:14px">2<sup>128</sup> = 340,282,366,920,938,463,463,374,607,431,768,211,456 direcciones</p>
+</div>
+<div class="caja analogia"><div class="tit">🟠 Analogía: los granos de arena</div>
+<p>Si IPv4 fuera una <b>cubeta de arena</b>, IPv6 sería <b>todas las playas y desiertos de miles de planetas como la Tierra</b>. Por eso en IPv6 ya no se “ahorran” direcciones: cada red local recibe 18 trillones de direcciones (/64) aunque tenga 20 computadoras.</p>
+</div>
+
+<!-- 6.1 Formato -->
+<h3 id="ipv6-formato">6.1 Formato de una dirección IPv6</h3>
+<ul>
+<li>128 bits escritos en <b>hexadecimal</b> (0-9 y a-f).</li>
+<li>Se divide en <b>8 grupos de 16 bits</b> llamados <b>hextetos</b>, separados por dos puntos (<code>:</code>).</li>
+<li>Cada dígito hexadecimal = <b>4 bits</b> (un <b>nibble</b>). Un hexteto = 4 dígitos hex = 16 bits.</li>
+<li>No distingue mayúsculas de minúsculas (se recomienda minúsculas).</li>
+</ul>
+<div class="bits">
+  <div class="f1">2001<small>hexteto 1</small></div><div class="f1">0db8<small>hexteto 2</small></div><div class="f1">acad<small>hexteto 3</small></div><div class="f2">0001<small>hexteto 4</small></div>
+  <div class="f3">0000<small>hexteto 5</small></div><div class="f3">0000<small>hexteto 6</small></div><div class="f3">0000<small>hexteto 7</small></div><div class="f3">0010<small>hexteto 8</small></div>
+</div>
+<p>Tabla de conversión hexadecimal ↔ binario (indispensable para subredes):</p>
+<div class="tabla-wrap"><table style="text-align:center;font-family:Consolas,monospace">
+<tr><th>Hex</th><td>0</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>a</td><td>b</td><td>c</td><td>d</td><td>e</td><td>f</td></tr>
+<tr><th>Dec</th><td>0</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td></tr>
+<tr><th>Bin</th><td>0000</td><td>0001</td><td>0010</td><td>0011</td><td>0100</td><td>0101</td><td>0110</td><td>0111</td><td>1000</td><td>1001</td><td>1010</td><td>1011</td><td>1100</td><td>1101</td><td>1110</td><td>1111</td></tr>
+</table></div>
+
+<h4>Reglas para abreviar (escribir más corto)</h4>
+<div class="grid2">
+<div class="card"><h5>Regla 1 · Omitir ceros a la izquierda</h5><p>En cada hexteto se pueden quitar los ceros iniciales (nunca los finales).</p><p class="mono" style="font-size:13.5px">0db8 → db8<br>0001 → 1<br>0000 → 0<br>0a00 → a00 (¡no “a”!)</p></div>
+<div class="card"><h5>Regla 2 · Dos puntos dobles <code>::</code></h5><p>Una secuencia continua de hextetos en cero se reemplaza por <code>::</code>. <b>Solo se puede usar una vez</b> por dirección (si no, sería ambigua). Se aplica a la secuencia más larga.</p></div>
+</div>
+<div class="caja ejemplo"><div class="tit">🟢 Ejemplos de abreviación</div>
+<div class="tabla-wrap"><table>
+<tr><th>Dirección completa</th><th>Regla 1</th><th>Regla 1 + 2 (forma comprimida)</th></tr>
+<tr><td class="mono">2001:0db8:acad:0001:0000:0000:0000:0010</td><td class="mono">2001:db8:acad:1:0:0:0:10</td><td class="mono"><b>2001:db8:acad:1::10</b></td></tr>
+<tr><td class="mono">fe80:0000:0000:0000:021a:2bff:fe3c:4d5e</td><td class="mono">fe80:0:0:0:21a:2bff:fe3c:4d5e</td><td class="mono"><b>fe80::21a:2bff:fe3c:4d5e</b></td></tr>
+<tr><td class="mono">2001:0db8:0000:0000:00a0:0000:0000:0001</td><td class="mono">2001:db8:0:0:a0:0:0:1</td><td class="mono"><b>2001:db8::a0:0:0:1</b> (empate: se comprime la primera)</td></tr>
+<tr><td class="mono">ff02:0000:0000:0000:0000:0000:0000:0001</td><td class="mono">ff02:0:0:0:0:0:0:1</td><td class="mono"><b>ff02::1</b></td></tr>
+<tr><td class="mono">0000:0000:0000:0000:0000:0000:0000:0001</td><td class="mono">0:0:0:0:0:0:0:1</td><td class="mono"><b>::1</b> (loopback)</td></tr>
+</table></div>
+</div>
+<div class="caja alerta"><div class="tit">🔴 Error clásico</div>
+<p><code>2001:db8::a0::1</code> es <b>inválida</b>: tiene dos <code>::</code> y no se sabría cuántos ceros van en cada uno.</p>
+<p><b>¿Cómo expandir?</b> Cuenta los hextetos que hay: en <code>2001:db8:acad:1::10</code> hay 5 → faltan 8 − 5 = <b>3</b> hextetos de ceros donde está el <code>::</code>.</p>
+</div>
+
+<!-- 6.2 Esquema -->
+<h3 id="ipv6-esquema">6.2 Esquema de direccionamiento: prefijo, ID de subred e ID de interfaz</h3>
+<div class="caja concepto"><div class="tit">🔵 Concepto</div>
+<p>En IPv6 <b>no existe la máscara en formato decimal</b>; solo se usa la <b>longitud de prefijo</b> (<code>/n</code>), que indica cuántos bits de la izquierda identifican la red. Una dirección unicast global típica se divide en <b>tres partes</b>:</p>
+</div>
+<div class="bits">
+  <div class="f1" style="flex:48">2001:0db8:acad<small><b>Prefijo de enrutamiento global</b> · 48 bits<br>Lo asigna el ISP / RIR al sitio</small></div>
+  <div class="f2" style="flex:16">0001<small><b>ID de subred</b> · 16 bits<br>Lo decide el administrador</small></div>
+  <div class="f3" style="flex:64">0000:0000:0000:0010<small><b>ID de interfaz</b> · 64 bits<br>Identifica al host (equivale a la porción de host)</small></div>
+</div>
+<p style="text-align:center;font-family:Consolas,monospace">← ─────── 64 bits: <b>PREFIJO DE RED</b> (/64) ─────── → ← ────── 64 bits: <b>HOST</b> ────── →</p>
+
+<div class="tabla-wrap"><table>
+<tr><th>Parte</th><th>Bits (caso típico)</th><th>¿Quién la define?</th><th>Equivalente en IPv4</th></tr>
+<tr><td><span class="n1">Prefijo de enrutamiento global</span></td><td>48 (puede ser /32 a /56)</td><td>IANA → LACNIC → ISP → organización</td><td>Red asignada por el ISP</td></tr>
+<tr><td><span class="n2">ID de subred</span></td><td>16 (64 − 48)</td><td>El administrador de la organización</td><td>Bits prestados para subredes</td></tr>
+<tr><td><span class="n3">ID de interfaz</span></td><td>64 (fijo en LAN)</td><td>Manual, SLAAC (EUI-64 / aleatorio) o DHCPv6</td><td>Porción de host</td></tr>
+</table></div>
+
+<div class="caja analogia"><div class="tit">🟠 Analogía: la dirección postal</div>
+<p><span class="n1">Prefijo global</span> = <b>País + Estado + Ciudad + Colonia</b> (te lo da la “autoridad”, no lo eliges tú).<br>
+<span class="n2">ID de subred</span> = <b>Calle</b> dentro de la colonia: tú, como “fraccionador”, decides cómo numerar tus 65,536 calles.<br>
+<span class="n3">ID de interfaz</span> = <b>Número de casa</b> en esa calle: cada calle tiene espacio para 18 trillones de casas.</p>
+</div>
+
+<h4>Jerarquía de asignación de prefijos</h4>
+<div class="svgbox">
+<svg viewBox="0 0 860 150" width="860">
+  <g style="font-size:12.5px">
+  <rect x="5" y="30" width="140" height="70" rx="9" fill="#475569"/><text x="75" y="58" text-anchor="middle" style="fill:#fff;font-weight:700">IANA</text><text x="75" y="78" text-anchor="middle" style="fill:#fff">2000::/3</text>
+  <rect x="180" y="30" width="140" height="70" rx="9" fill="#6d28d9"/><text x="250" y="58" text-anchor="middle" style="fill:#fff;font-weight:700">RIR (LACNIC)</text><text x="250" y="78" text-anchor="middle" style="fill:#fff">/12 – /23</text>
+  <rect x="355" y="30" width="140" height="70" rx="9" fill="#2563eb"/><text x="425" y="58" text-anchor="middle" style="fill:#fff;font-weight:700">ISP</text><text x="425" y="78" text-anchor="middle" style="fill:#fff">/32</text>
+  <rect x="530" y="30" width="140" height="70" rx="9" fill="#15803d"/><text x="600" y="52" text-anchor="middle" style="fill:#fff;font-weight:700">Organización</text><text x="600" y="70" text-anchor="middle" style="fill:#fff">/48 (empresa, escuela)</text><text x="600" y="87" text-anchor="middle" style="fill:#fff">/56 (hogar)</text>
+  <rect x="705" y="30" width="150" height="70" rx="9" fill="#b45309"/><text x="780" y="58" text-anchor="middle" style="fill:#fff;font-weight:700">Red local (LAN)</text><text x="780" y="78" text-anchor="middle" style="fill:#fff">/64</text>
+  <path d="M145 65 H178 M320 65 H353 M495 65 H528 M670 65 H703" stroke="#888" stroke-width="2.5"/>
+  <text x="430" y="130" text-anchor="middle" style="font-style:italic">Cada nivel recibe un prefijo más largo (más específico) del nivel superior</text>
+  </g>
+</svg></div>
+
+<div class="tabla-wrap"><table>
+<tr><th>Prefijo recibido</th><th>Bits para subredes hasta /64</th><th>Cantidad de subredes /64</th><th>Ejemplo de quién lo recibe</th></tr>
+<tr><td>/32</td><td>32</td><td>4,294,967,296</td><td>Un proveedor de Internet</td></tr>
+<tr><td>/48</td><td>16</td><td><b>65,536</b></td><td>Universidad, empresa</td></tr>
+<tr><td>/52</td><td>12</td><td>4,096</td><td>Campus o sede</td></tr>
+<tr><td>/56</td><td>8</td><td>256</td><td>Hogar o negocio pequeño</td></tr>
+<tr><td>/60</td><td>4</td><td>16</td><td>Algunos ISP para hogares</td></tr>
+<tr><td>/64</td><td>0</td><td>1</td><td>Una sola LAN / VLAN</td></tr>
+</table></div>
+
+<div class="caja clave"><div class="tit">🟣 ¿Por qué /64 en las LAN?</div>
+<p>La autoconfiguración <b>SLAAC</b> y el método <b>EUI-64</b> necesitan exactamente <b>64 bits de ID de interfaz</b>. Si usas un prefijo distinto de /64 en una LAN, SLAAC deja de funcionar. Por eso la regla práctica es: <b>toda red con hosts es /64</b>. (En enlaces punto a punto entre routers a veces se usa /127, y en loopbacks /128.)</p>
+</div>
+
+<!-- 6.3 Tipos -->
+<h3 id="ipv6-tipos">6.3 Clasificación de las direcciones IPv6</h3>
+<p>IPv6 tiene <b>tres grandes tipos</b> de dirección. <b>No existe broadcast</b>: su función la cubre el multicast.</p>
+<div class="svgbox">
+<svg viewBox="0 0 950 300" width="950">
+  <g style="font-size:12.5px">
+  <rect x="360" y="8" width="180" height="40" rx="9" fill="#1f6f5c"/><text x="450" y="33" text-anchor="middle" style="fill:#fff;font-weight:700;font-size:14px">Direcciones IPv6</text>
+  <path d="M450 48 V70 M120 70 H830 M120 70 V88 M450 70 V88 M830 70 V88" stroke="#888" stroke-width="2" fill="none"/>
+  <rect x="40" y="88" width="160" height="40" rx="9" fill="#2563eb"/><text x="120" y="113" text-anchor="middle" style="fill:#fff;font-weight:700">UNICAST (uno a uno)</text>
+  <rect x="360" y="88" width="180" height="40" rx="9" fill="#9333ea"/><text x="450" y="113" text-anchor="middle" style="fill:#fff;font-weight:700">MULTICAST (uno a grupo)</text>
+  <rect x="725" y="88" width="210" height="40" rx="9" fill="#b45309"/><text x="830" y="113" text-anchor="middle" style="fill:#fff;font-weight:700">ANYCAST (uno al más cercano)</text>
+  <path d="M120 128 V290 M120 150 H140 M120 178 H140 M120 206 H140 M120 234 H140 M120 262 H140 M120 290 H140" stroke="#2563eb" stroke-width="2" fill="none"/>
+  <text x="146" y="155">Global unicast (GUA) · 2000::/3</text>
+  <text x="146" y="183">Link-local (LLA) · fe80::/10</text>
+  <text x="146" y="211">Unique local (ULA) · fc00::/7</text>
+  <text x="146" y="239">Loopback · ::1/128</text>
+  <text x="146" y="267">No especificada · ::/128</text>
+  <text x="146" y="295">IPv4 embebida · ::ffff:0:0/96</text>
+  <path d="M450 128 V206 M450 150 H470 M450 178 H470 M450 206 H470" stroke="#9333ea" stroke-width="2" fill="none"/>
+  <text x="476" y="155">Asignado (bien conocido) · ff00::/8</text>
+  <text x="476" y="183">Nodo solicitado · ff02::1:ff00:0/104</text>
+  <text x="476" y="211">Definido por el usuario/aplicación</text>
+  <text x="740" y="155">Una dirección unicast</text>
+  <text x="740" y="173">configurada en varios</text>
+  <text x="740" y="191">dispositivos; responde el</text>
+  <text x="740" y="209">más cercano según la ruta</text>
+  </g>
+</svg></div>
+
+<h4>¿Cómo la reconozco a simple vista? (por su inicio)</h4>
+<div class="tabla-wrap"><table>
+<tr><th>Si empieza con…</th><th>Tipo</th><th>Prefijo</th><th>¿Sale a Internet?</th><th>Ejemplo</th></tr>
+<tr><td class="mono"><b>2</b> o <b>3</b></td><td>Global unicast (GUA)</td><td class="mono">2000::/3</td><td>✅ Sí (es pública)</td><td class="mono">2001:db8:acad:1::10</td></tr>
+<tr><td class="mono"><b>fe80</b></td><td>Link-local (LLA)</td><td class="mono">fe80::/10</td><td>❌ Nunca sale del enlace</td><td class="mono">fe80::1</td></tr>
+<tr><td class="mono"><b>fd</b> (o fc)</td><td>Unique local (ULA)</td><td class="mono">fc00::/7</td><td>❌ Solo dentro de la organización</td><td class="mono">fd3a:9b21:c4e5:10::5</td></tr>
+<tr><td class="mono"><b>ff</b></td><td>Multicast</td><td class="mono">ff00::/8</td><td>Depende del alcance</td><td class="mono">ff02::1</td></tr>
+<tr><td class="mono">::1</td><td>Loopback</td><td class="mono">::1/128</td><td>❌</td><td class="mono">ping ::1</td></tr>
+<tr><td class="mono">::</td><td>No especificada</td><td class="mono">::/128</td><td>❌</td><td>Origen cuando aún no hay IP</td></tr>
+</table></div>
+
+<h4>Unicast · en detalle</h4>
+<div class="grid2">
+<div class="card"><h5>🌎 Global Unicast (GUA)</h5>
+<p>• Equivalente a una <b>IP pública</b> de IPv4: única en todo el mundo y enrutable en Internet.<br>
+• Actualmente se asignan las que inician con <b>2</b> o <b>3</b> (2000::/3).<br>
+• Estructura: prefijo global + ID de subred + ID de interfaz (ver 6.2).<br>
+• <code>2001:db8::/32</code> está reservada para <b>documentación y ejemplos</b> (como en este material y Packet Tracer).</p></div>
+<div class="card"><h5>🔗 Link-Local (LLA)</h5>
+<p>• Inician con <b>fe80</b>. Solo sirven <b>dentro del mismo enlace</b> (mismo segmento/VLAN); <b>los routers no las reenvían</b>.<br>
+• <b>Obligatorias:</b> toda interfaz con IPv6 tiene una, y se crea sola al activar IPv6.<br>
+• Se usan para NDP, para los anuncios de router y como <b>puerta de enlace</b> de los hosts.<br>
+• Pueden repetirse en enlaces distintos (por eso Windows agrega <code>%12</code>, el número de interfaz).</p></div>
+<div class="card"><h5>🏫 Unique Local (ULA)</h5>
+<p>• Inician con <b>fd</b> (fc00::/7 con el bit L = 1 → fd00::/8).<br>
+• Equivalentes a las <b>privadas</b> de IPv4 (10.x, 192.168.x): para comunicación interna, no se enrutan en Internet.<br>
+• Incluyen un <b>ID global aleatorio de 40 bits</b> para que sea casi imposible que dos organizaciones coincidan (útil si se fusionan o conectan por VPN).</p></div>
+<div class="card"><h5>🔁 Loopback y no especificada</h5>
+<p>• <b>::1</b> = el propio equipo (como 127.0.0.1).<br>
+• <b>::</b> = “sin dirección”; se usa como origen mientras el equipo obtiene una (por ejemplo, al verificar duplicados).<br>
+• <b>::ffff:192.0.2.1</b> = IPv4 representada dentro de IPv6 (transición).</p></div>
+</div>
+
+<p><b>Estructura de una ULA</b> (prefijo /48 propio, generado aleatoriamente):</p>
+<div class="bits">
+  <div class="f5" style="flex:8">fd<small>8 bits<br>prefijo + L=1</small></div>
+  <div class="f1" style="flex:40">3a:9b21:c4e5<small><b>ID global</b> · 40 bits aleatorios</small></div>
+  <div class="f2" style="flex:16">0010<small>ID de subred<br>16 bits</small></div>
+  <div class="f3" style="flex:64">0000:0000:0000:0005<small>ID de interfaz · 64 bits</small></div>
+</div>
+
+<p><b>Estructura de una LLA:</b></p>
+<div class="bits">
+  <div class="f5" style="flex:10">fe80<small>10 bits: 1111 1110 10</small></div>
+  <div class="f4" style="flex:54">0000:0000:0000<small>54 bits en cero</small></div>
+  <div class="f3" style="flex:64">021a:2bff:fe3c:4d5e<small>ID de interfaz · 64 bits</small></div>
+</div>
+
+<h4>Multicast · en detalle</h4>
+<p>Todas inician con <b>ff</b>. El tercer dígito hex indica el <b>alcance</b>: <code>ff02</code> = enlace local, <code>ff05</code> = sitio, <code>ff0e</code> = global.</p>
+<div class="tabla-wrap"><table>
+<tr><th>Dirección</th><th>Grupo</th><th>Uso</th></tr>
+<tr><td class="mono">ff02::1</td><td>Todos los nodos</td><td>Todos los dispositivos IPv6 del enlace. Es lo más parecido a un broadcast.</td></tr>
+<tr><td class="mono">ff02::2</td><td>Todos los routers</td><td>Los hosts envían aquí la <i>Router Solicitation</i>.</td></tr>
+<tr><td class="mono">ff02::5 / ff02::6</td><td>Routers OSPFv3</td><td>Intercambio de rutas OSPF.</td></tr>
+<tr><td class="mono">ff02::1:2</td><td>Servidores/relays DHCPv6</td><td>El cliente busca DHCPv6 aquí.</td></tr>
+<tr><td class="mono">ff02::1:ffXX:XXXX</td><td><b>Nodo solicitado</b></td><td>Se forma con los últimos 24 bits de la unicast. Reemplaza al broadcast de ARP: solo “escuchan” los equipos cuya dirección termina igual.</td></tr>
+</table></div>
+<div class="caja ejemplo"><div class="tit">🟢 Ejemplo: dirección de nodo solicitado</div>
+<p>Host: <code>2001:db8:acad:1::<b>10</b></code> → últimos 24 bits = <code>00:0010</code> → nodo solicitado: <code>ff02::1:ff<b>00:10</b></code>.<br>
+Cuando otro equipo quiere su MAC, envía la <i>Neighbor Solicitation</i> a <code>ff02::1:ff00:10</code> en lugar de molestar a toda la red.</p>
+</div>
+
+<div class="caja analogia"><div class="tit">🟠 Analogía: los tres tipos</div>
+<p><b>Unicast</b>: una carta con nombre y dirección. <b>Multicast</b>: un mensaje al “grupo de padres de familia” (solo lo reciben los inscritos). <b>Anycast</b>: marcar al <b>911</b>: el mismo número existe en muchas ciudades, pero te contesta la central <b>más cercana</b>.</p>
+</div>
+
+<!-- 6.4 LAN -->
+<h3 id="ipv6-lan">6.4 ¿Qué tipo de dirección se usa comúnmente en una red local?</h3>
+<div class="caja clave"><div class="tit">🟣 Respuesta corta</div>
+<p>En una LAN IPv6, <b>cada interfaz tiene varias direcciones al mismo tiempo</b> (eso es normal):</p>
+<ol>
+<li><b>Link-local (fe80::/10)</b> → siempre, automática y obligatoria. Sirve para hablar con los vecinos y con el router (la puerta de enlace del host suele ser la LLA del router).</li>
+<li><b>Global unicast (GUA) en un prefijo /64</b> → <b>la más común para redes locales con salida a Internet</b>. El router anuncia el prefijo /64 y el host completa su ID de interfaz (SLAAC) o la recibe de DHCPv6.</li>
+<li><b>Unique local (ULA, fd00::/8) en /64</b> → para redes internas sin salida a Internet, laboratorios o servicios internos (impresoras, servidores) que se quieren mantener privados. Es la “equivalente” a 192.168.x.x.</li>
+</ol>
+<p><b>El prefijo estándar para cualquier LAN es /64</b>, sin importar si es GUA o ULA.</p>
+</div>
+
+<div class="caja ejemplo"><div class="tit">🟢 Ejemplo real: lo que muestra una PC con Windows</div>
+<pre><span class="p">C:\&gt;</span> ipconfig
+Adaptador de Ethernet Ethernet:
+   Dirección IPv6 . . . . . . . . . . . . : <span class="c">2001:db8:acad:1:21a:2bff:fe3c:4d5e</span>   <span class="m">← GUA (SLAAC)</span>
+   Dirección IPv6 temporal. . . . . . . . : <span class="c">2001:db8:acad:1:9d4c:1e2f:7a31:b0c8</span>  <span class="m">← GUA temporal (privacidad)</span>
+   Vínculo: dirección IPv6 local. . . . . : <span class="k">fe80::21a:2bff:fe3c:4d5e%12</span>         <span class="m">← LLA</span>
+   Dirección IPv4. . . . . . . . . . . . . : 192.168.10.66
+   Máscara de subred . . . . . . . . . . . : 255.255.255.192
+   Puerta de enlace predeterminada . . . . : <span class="k">fe80::1%12</span>                         <span class="m">← LLA del router</span>
+                                             192.168.10.65</pre>
+<p>Observa: la PC tiene <b>dos GUA</b> (una estable y una temporal que cambia periódicamente para proteger la privacidad), una <b>LLA</b>, y su <b>gateway IPv6 es una dirección link-local</b>.</p>
+</div>
+
+<div class="tabla-wrap"><table>
+<tr><th>Escenario</th><th>Direcciones que se usan</th></tr>
+<tr><td>Hogar con Internet IPv6</td><td>El ISP delega un /56 o /64 → hosts con GUA (SLAAC) + LLA.</td></tr>
+<tr><td>Escuela / empresa</td><td>/48 del ISP → un /64 por VLAN/laboratorio; GUA por SLAAC o DHCPv6; a veces ULA adicional para servidores internos.</td></tr>
+<tr><td>Laboratorio aislado</td><td>Solo ULA (fdxx:…/48 dividido en /64) + LLA.</td></tr>
+<tr><td>Prácticas en Packet Tracer / libros</td><td>Prefijo de documentación <code>2001:db8::/32</code>, normalmente <code>2001:db8:acad:X::/64</code>.</td></tr>
+</table></div>
+
+<!-- 6.5 EUI-64 -->
+<h3 id="ipv6-eui64">6.5 El ID de interfaz: cómo se genera la parte del host</h3>
+<p>Los 64 bits del ID de interfaz pueden obtenerse de cuatro maneras:</p>
+<div class="grid2">
+<div class="card"><h5>✍️ Manual (estática)</h5><p>El administrador la escribe. Se usa en routers y servidores para que sean fáciles de recordar: <code>2001:db8:acad:1::1</code>.</p></div>
+<div class="card"><h5>🔢 EUI-64</h5><p>Se construye a partir de la MAC de 48 bits. Es predecible (la MAC queda visible).</p></div>
+<div class="card"><h5>🎲 Aleatoria</h5><p>Windows, macOS, Android e iOS generan IDs aleatorios (direcciones de privacidad, RFC 4941/7217) para que no se pueda rastrear al equipo por su MAC.</p></div>
+<div class="card"><h5>🖥️ DHCPv6</h5><p>Un servidor entrega la dirección completa (modo stateful).</p></div>
+</div>
+
+<div class="caja ejemplo"><div class="tit">🟢 Ejemplo paso a paso: EUI-64 con la MAC 00:1A:2B:3C:4D:5E</div>
+<ol class="pasos">
+<li><b>Dividir la MAC a la mitad:</b> <code>00:1A:2B</code> | <code>3C:4D:5E</code></li>
+<li><b>Insertar <code>FF:FE</code> en medio</b> (así se completan 64 bits): <code>00:1A:2B:<b>FF:FE</b>:3C:4D:5E</code></li>
+<li><b>Invertir el 7.º bit</b> (bit U/L) del primer byte:<br>
+<span class="mono">00</span> = <span class="mono">0000 00<mark>0</mark>0</span> → <span class="mono">0000 00<mark>1</mark>0</span> = <span class="mono"><b>02</b></span></li>
+<li><b>Agrupar en hextetos:</b> <code>021a:2bff:fe3c:4d5e</code></li>
+<li><b>Unir con el prefijo:</b><br>
+LLA: <code>fe80::21a:2bff:fe3c:4d5e</code><br>
+GUA (prefijo anunciado 2001:db8:acad:1::/64): <code>2001:db8:acad:1:21a:2bff:fe3c:4d5e</code></li>
+</ol>
+<p>🔎 Truco: si ves <code>ff:fe</code> en medio del ID de interfaz, esa dirección se generó con <b>EUI-64</b>.</p>
+</div>
+
+<!-- 6.6 Stateful / stateless -->
+<h3 id="ipv6-slaac">6.6 Servicios “stateful” y “stateless” en IPv6</h3>
+<div class="caja concepto"><div class="tit">🔵 Concepto</div>
+<p>Un servicio <b>stateful</b> (“con estado”) <b>lleva un registro</b> de qué dirección entregó a cada equipo (como DHCP en IPv4). Un servicio <b>stateless</b> (“sin estado”) <b>no guarda registro</b>: el router solo anuncia el prefijo y cada equipo se configura solo.</p>
+</div>
+<div class="caja analogia"><div class="tit">🟠 Analogía: la colonia nueva</div>
+<p><b>Stateless (SLAAC):</b> el municipio pone un letrero “Esta es la calle Morelos” (el prefijo). Cada vecino elige su propio número de casa, verifica que nadie más lo tenga y listo. El municipio no lleva lista.<br>
+<b>Stateful (DHCPv6):</b> el municipio tiene una oficina que <b>asigna</b> el número a cada vecino y lo apunta en un libro de registro.</p>
+</div>
+
+<h4>¿Cómo empieza todo? Mensajes RS y RA (ICMPv6)</h4>
+<ol class="pasos">
+<li>El host se conecta y crea su <b>LLA</b> (fe80::…).</li>
+<li>Envía una <b>Router Solicitation (RS)</b> a <code>ff02::2</code> (todos los routers): “¿hay algún router aquí?”.</li>
+<li>El router responde con un <b>Router Advertisement (RA)</b> a <code>ff02::1</code> que contiene: <b>prefijo /64</b>, <b>su LLA como gateway</b> y <b>banderas</b> que indican el método a usar.</li>
+<li>El host aplica el método indicado y realiza <b>DAD</b> (<i>Duplicate Address Detection</i>): pregunta si alguien ya usa esa dirección antes de usarla.</li>
+</ol>
+
+<div class="tabla-wrap"><table>
+<tr><th>Método</th><th>Banderas del RA</th><th>Dirección (prefijo + ID)</th><th>DNS y otros datos</th><th>¿Tipo?</th></tr>
+<tr><td><b>1. Solo SLAAC</b> (predeterminado en Cisco)</td><td>A=1, O=0, M=0</td><td>El host la genera (SLAAC)</td><td>RA (opción RDNSS) o manual</td><td>Stateless</td></tr>
+<tr><td><b>2. SLAAC + DHCPv6 sin estado</b></td><td>A=1, <b>O=1</b>, M=0</td><td>El host la genera (SLAAC)</td><td>Servidor DHCPv6 (sin llevar registro de direcciones)</td><td>Stateless</td></tr>
+<tr><td><b>3. DHCPv6 con estado</b></td><td><b>M=1</b>, (A=0)</td><td>La asigna el servidor DHCPv6 y la registra</td><td>Servidor DHCPv6</td><td><b>Stateful</b></td></tr>
+</table></div>
+<p><b>A</b> = <i>Autonomous</i> (usa SLAAC) · <b>O</b> = <i>Other config</i> (pide “otros datos” a DHCPv6) · <b>M</b> = <i>Managed</i> (pide la dirección a DHCPv6).</p>
+<p>⚠️ En ambos casos el <b>gateway</b> siempre lo aprende el host del RA (DHCPv6 no entrega puerta de enlace).</p>
+
+<div class="caja ejemplo"><div class="tit">🟢 Configuración en un router Cisco</div>
+<pre><span class="c">! Método 2: SLAAC + DHCPv6 sin estado</span>
+<span class="p">R1(config)#</span> ipv6 dhcp pool SIN-ESTADO
+<span class="p">R1(config-dhcpv6)#</span> dns-server 2001:db8:acad:1::53
+<span class="p">R1(config-dhcpv6)#</span> domain-name uthh.edu.mx
+<span class="p">R1(config)#</span> interface g0/0/1
+<span class="p">R1(config-if)#</span> ipv6 nd other-config-flag          <span class="m">! O = 1</span>
+<span class="p">R1(config-if)#</span> ipv6 dhcp server SIN-ESTADO
+
+<span class="c">! Método 3: DHCPv6 con estado</span>
+<span class="p">R1(config)#</span> ipv6 dhcp pool CON-ESTADO
+<span class="p">R1(config-dhcpv6)#</span> address prefix 2001:db8:acad:2::/64
+<span class="p">R1(config-dhcpv6)#</span> dns-server 2001:db8:acad:1::53
+<span class="p">R1(config)#</span> interface g0/0/2
+<span class="p">R1(config-if)#</span> ipv6 nd managed-config-flag        <span class="m">! M = 1</span>
+<span class="p">R1(config-if)#</span> ipv6 nd prefix default no-autoconfig <span class="m">! A = 0</span>
+<span class="p">R1(config-if)#</span> ipv6 dhcp server CON-ESTADO</pre>
+</div>
+
+<!-- 6.7 Subredes -->
+<h3 id="ipv6-subredes">6.7 División de redes IPv6 en subredes · paso a paso</h3>
+<div class="caja concepto"><div class="tit">🔵 La gran diferencia con IPv4</div>
+<ul>
+<li>En IPv4 se roban bits de <b>host</b> y hay que cuidar cada dirección. En IPv6 <b>no se tocan los 64 bits de interfaz</b>: se usan los bits del <b>ID de subred</b> que están entre el prefijo global y el /64.</li>
+<li>No hay dirección de broadcast; no se “restan 2”.</li>
+<li>Fórmulas: <b>subredes = 2<sup>(prefijo nuevo − prefijo original)</sup></b> · <b>direcciones por subred = 2<sup>(128 − prefijo)</sup></b>.</li>
+<li>Lo más fácil es dividir en <b>límites de nibble</b> (múltiplos de 4 bits: /48, /52, /56, /60, /64), porque así cada subred cambia un <b>dígito hexadecimal completo</b>.</li>
+</ul>
+</div>
+
+<div class="caja ejemplo"><div class="tit">🟢 Ejemplo 1 · 2001:db8:acad::/48 → subredes /64 (el caso más común)</div>
+<p><b>Problema:</b> La universidad recibió <code>2001:db8:acad::/48</code> de su ISP. Debe crear una subred por cada área.</p>
+<ol class="pasos">
+<li><b>Expandir el prefijo</b> para ver cada bit: <code><span class="n1">2001:0db8:acad</span>:<span class="n2">0000</span>:<span class="n3">0000:0000:0000:0000</span></code></li>
+<li><b>Bits de subred:</b> 64 − 48 = <b>16 bits</b> = el <b>4.º hexteto</b> completo.</li>
+<li><b>Número de subredes:</b> 2<sup>16</sup> = <b>65,536</b> subredes /64 (de <code>0000</code> a <code>ffff</code>).</li>
+<li><b>Direcciones por subred:</b> 2<sup>64</sup> = <b>18,446,744,073,709,551,616</b>.</li>
+<li><b>Generar subredes:</b> se cuenta en <b>hexadecimal</b> en el 4.º hexteto: 0, 1, 2 … 9, a, b … f, 10, 11 …</li>
+</ol>
+<div class="tabla-wrap"><table>
+<tr><th>Subred (ID)</th><th>Prefijo /64</th><th>Binario del 4.º hexteto</th><th>Asignación</th></tr>
+<tr><td>0</td><td class="mono"><span class="n1">2001:db8:acad</span>:<span class="n2">0</span>::/64</td><td class="mono">0000 0000 0000 0000</td><td>Reservada / infraestructura</td></tr>
+<tr><td>1</td><td class="mono"><span class="n1">2001:db8:acad</span>:<span class="n2">1</span>::/64</td><td class="mono">0000 0000 0000 0001</td><td>Laboratorio de Redes</td></tr>
+<tr><td>2</td><td class="mono"><span class="n1">2001:db8:acad</span>:<span class="n2">2</span>::/64</td><td class="mono">0000 0000 0000 0010</td><td>Laboratorio de Programación</td></tr>
+<tr><td>3</td><td class="mono"><span class="n1">2001:db8:acad</span>:<span class="n2">3</span>::/64</td><td class="mono">0000 0000 0000 0011</td><td>Biblioteca</td></tr>
+<tr><td>…</td><td colspan="3" style="text-align:center">…</td></tr>
+<tr><td>9</td><td class="mono"><span class="n1">2001:db8:acad</span>:<span class="n2">9</span>::/64</td><td class="mono">0000 0000 0000 1001</td><td>Dirección</td></tr>
+<tr><td>10</td><td class="mono"><span class="n1">2001:db8:acad</span>:<span class="n2">a</span>::/64</td><td class="mono">0000 0000 0000 1010</td><td>Servicios escolares</td></tr>
+<tr><td>15</td><td class="mono"><span class="n1">2001:db8:acad</span>:<span class="n2">f</span>::/64</td><td class="mono">0000 0000 0000 1111</td><td>Wi-Fi alumnos</td></tr>
+<tr><td>16</td><td class="mono"><span class="n1">2001:db8:acad</span>:<span class="n2">10</span>::/64</td><td class="mono">0000 0000 0001 0000</td><td>Wi-Fi docentes</td></tr>
+<tr><td>…</td><td colspan="3" style="text-align:center">…</td></tr>
+<tr><td>65,535</td><td class="mono"><span class="n1">2001:db8:acad</span>:<span class="n2">ffff</span>::/64</td><td class="mono">1111 1111 1111 1111</td><td>Última subred posible</td></tr>
+</table></div>
+<p><b>Hosts dentro de la subred 1</b> (<code>2001:db8:acad:1::/64</code>):</p>
+<div class="binario"><span class="n1">2001:db8:acad</span>:<span class="n2">1</span>:<span class="n3">0000:0000:0000:0000</span>  = 2001:db8:acad:1::          ← ID de la subred (anycast router-subred, no se asigna a hosts)
+<span class="n1">2001:db8:acad</span>:<span class="n2">1</span>:<span class="n3">0000:0000:0000:0001</span>  = 2001:db8:acad:1::1         ← Router R1 (gateway, manual)
+<span class="n1">2001:db8:acad</span>:<span class="n2">1</span>:<span class="n3">0000:0000:0000:000a</span>  = 2001:db8:acad:1::a         ← Servidor (manual)
+<span class="n1">2001:db8:acad</span>:<span class="n2">1</span>:<span class="n3">021a:2bff:fe3c:4d5e</span>  = 2001:db8:acad:1:21a:2bff:fe3c:4d5e  ← PC (SLAAC EUI-64)
+<span class="n1">2001:db8:acad</span>:<span class="n2">1</span>:<span class="n3">9d4c:1e2f:7a31:b0c8</span>  = 2001:db8:acad:1:9d4c:1e2f:7a31:b0c8  ← Laptop (SLAAC aleatoria)
+   …
+<span class="n1">2001:db8:acad</span>:<span class="n2">1</span>:<span class="n3">ffff:ffff:ffff:ffff</span>  = última dirección (válida: no existe broadcast)</div>
+<p><b>Configuración del router con varias subredes:</b></p>
+<pre><span class="p">R1(config)#</span> ipv6 unicast-routing
+<span class="p">R1(config)#</span> interface g0/0/0
+<span class="p">R1(config-if)#</span> ipv6 address 2001:db8:acad:1::1/64      <span class="m">! Lab. Redes</span>
+<span class="p">R1(config-if)#</span> ipv6 address fe80::1 link-local
+<span class="p">R1(config)#</span> interface g0/0/1
+<span class="p">R1(config-if)#</span> ipv6 address 2001:db8:acad:2::1/64      <span class="m">! Lab. Programación</span>
+<span class="p">R1(config-if)#</span> ipv6 address fe80::1 link-local        <span class="m">! la misma LLA es válida en otro enlace</span></pre>
+</div>
+
+<div class="caja ejemplo"><div class="tit">🟢 Ejemplo 2 · Subredes jerárquicas: /48 → /52 (sedes) → /64 (áreas)</div>
+<p><b>Problema:</b> La universidad tiene varias sedes y quiere que cada una tenga su propio bloque, para que las rutas queden ordenadas.</p>
+<ol class="pasos">
+<li><b>Nivel sede:</b> se toma el <b>primer dígito hex</b> del 4.º hexteto (4 bits) → /48 + 4 = <b>/52</b> → 2<sup>4</sup> = <b>16 sedes</b>.</li>
+<li><b>Nivel área:</b> los 3 dígitos restantes (12 bits) → 2<sup>12</sup> = <b>4,096 subredes /64</b> por sede.</li>
+</ol>
+<div class="bits">
+  <div class="f1" style="flex:48">2001:0db8:acad<small>/48 global</small></div>
+  <div class="f4" style="flex:4">1<small>sede<br>4 bits</small></div>
+  <div class="f2" style="flex:12">002<small>área · 12 bits</small></div>
+  <div class="f3" style="flex:64">ID de interfaz (64 bits)<small>host</small></div>
+</div>
+<div class="tabla-wrap"><table>
+<tr><th>Sede</th><th>Bloque /52</th><th>Subredes /64 que contiene</th></tr>
+<tr><td>0 · Rectoría</td><td class="mono">2001:db8:acad:<b>0</b>000::/52</td><td class="mono">2001:db8:acad:0000::/64 … 2001:db8:acad:0fff::/64</td></tr>
+<tr><td>1 · Campus Huejutla</td><td class="mono">2001:db8:acad:<b>1</b>000::/52</td><td class="mono">2001:db8:acad:1000::/64 … 2001:db8:acad:1fff::/64</td></tr>
+<tr><td>2 · Campus 2</td><td class="mono">2001:db8:acad:<b>2</b>000::/52</td><td class="mono">2001:db8:acad:2000::/64 … 2001:db8:acad:2fff::/64</td></tr>
+<tr><td>…</td><td colspan="2" style="text-align:center">…</td></tr>
+<tr><td>15</td><td class="mono">2001:db8:acad:<b>f</b>000::/52</td><td class="mono">2001:db8:acad:f000::/64 … 2001:db8:acad:ffff::/64</td></tr>
+</table></div>
+<p><b>Dentro del Campus Huejutla (2001:db8:acad:1000::/52):</b></p>
+<div class="tabla-wrap"><table>
+<tr><th>Área</th><th>Subred /64</th><th>Gateway</th><th>Ejemplo de host</th></tr>
+<tr><td>Lab. Redes</td><td class="mono">2001:db8:acad:1001::/64</td><td class="mono">2001:db8:acad:1001::1</td><td class="mono">2001:db8:acad:1001::25</td></tr>
+<tr><td>Lab. Software</td><td class="mono">2001:db8:acad:1002::/64</td><td class="mono">2001:db8:acad:1002::1</td><td class="mono">2001:db8:acad:1002::25</td></tr>
+<tr><td>Biblioteca</td><td class="mono">2001:db8:acad:1003::/64</td><td class="mono">2001:db8:acad:1003::1</td><td class="mono">2001:db8:acad:1003::25</td></tr>
+<tr><td>Wi-Fi</td><td class="mono">2001:db8:acad:100a::/64</td><td class="mono">2001:db8:acad:100a::1</td><td>SLAAC</td></tr>
+</table></div>
+<p>Ventaja: el router de la rectoría solo necesita <b>una ruta</b> (<code>2001:db8:acad:1000::/52</code>) para llegar a las 4,096 subredes de Huejutla (<b>sumarización</b>).</p>
+</div>
+
+<div class="caja ejemplo"><div class="tit">🟢 Ejemplo 3 · Un hogar recibe un /56</div>
+<p>El ISP entrega <code>2001:db8:beef:3400::/56</code>. ¿Cuántas redes puedo crear y cuáles son?</p>
+<ul>
+<li>56 bits = 3 hextetos (48) + <b>2 dígitos hex</b> del 4.º hexteto (<code>34</code>) fijos.</li>
+<li>Quedan 64 − 56 = <b>8 bits</b> (2 dígitos hex) → 2<sup>8</sup> = <b>256 subredes /64</b>.</li>
+<li>Subredes: <code>2001:db8:beef:34<b>00</b>::/64</code>, <code>…:34<b>01</b>::/64</code>, <code>…:34<b>02</b>::/64</code> … <code>…:34<b>ff</b>::/64</code>.</li>
+<li>Por ejemplo: <code>3400</code> red principal, <code>3401</code> invitados, <code>3402</code> cámaras, <code>3403</code> IoT.</li>
+</ul>
+</div>
+
+<div class="caja ejemplo"><div class="tit">🟢 Ejemplo 4 · Fuera del límite de nibble: /48 → /50</div>
+<p>Si solo se necesitan <b>4 bloques grandes</b>, se piden 2 bits: /48 + 2 = /50. Los 2 bits afectan solo la <b>mitad</b> del primer dígito hex del 4.º hexteto, por eso los saltos no son de 1 en 1:</p>
+<div class="binario">Bits prestados (2)  4.º hexteto en binario          Hex     Bloque /50
+       <span class="n4">00</span>            <span class="n4">00</span><span class="n2">00 0000 0000 0000</span>           0000    2001:db8:acad:0000::/50   (0000 – 3fff)
+       <span class="n4">01</span>            <span class="n4">01</span><span class="n2">00 0000 0000 0000</span>           4000    2001:db8:acad:4000::/50   (4000 – 7fff)
+       <span class="n4">10</span>            <span class="n4">10</span><span class="n2">00 0000 0000 0000</span>           8000    2001:db8:acad:8000::/50   (8000 – bfff)
+       <span class="n4">11</span>            <span class="n4">11</span><span class="n2">00 0000 0000 0000</span>           c000    2001:db8:acad:c000::/50   (c000 – ffff)</div>
+<p>Cada /50 contiene 2<sup>14</sup> = 16,384 subredes /64. Funciona, pero es más difícil de leer; por eso se prefieren los límites de nibble.</p>
+</div>
+
+<div class="caja ejemplo"><div class="tit">🟢 Ejemplo 5 · Red interna con ULA</div>
+<p>Un laboratorio aislado genera su prefijo ULA con un ID global aleatorio: <code>fd5e:12a7:9c03::/48</code>.</p>
+<div class="tabla-wrap"><table>
+<tr><th>Red</th><th>Subred /64</th><th>Hosts de ejemplo</th></tr>
+<tr><td>Servidores</td><td class="mono">fd5e:12a7:9c03:<b>10</b>::/64</td><td class="mono">fd5e:12a7:9c03:10::1 (gw), ::10 (web), ::53 (DNS)</td></tr>
+<tr><td>Equipos alumnos</td><td class="mono">fd5e:12a7:9c03:<b>20</b>::/64</td><td>SLAAC</td></tr>
+<tr><td>Impresoras</td><td class="mono">fd5e:12a7:9c03:<b>30</b>::/64</td><td class="mono">fd5e:12a7:9c03:30::a, ::b</td></tr>
+</table></div>
+<p>Truco didáctico: usar como ID de subred el <b>número de VLAN</b> (VLAN 10 → <code>:10::</code>, VLAN 20 → <code>:20::</code>) facilita la administración.</p>
+</div>
+
+<h4>Comparativa rápida: subredes en IPv4 vs IPv6</h4>
+<div class="tabla-wrap"><table>
+<tr><th>Aspecto</th><th>IPv4</th><th>IPv6</th></tr>
+<tr><td>Bits que se dividen</td><td>Bits de host (se pierden hosts)</td><td>Bits del ID de subred (los 64 de host no se tocan)</td></tr>
+<tr><td>Representación</td><td>Máscara decimal o /n</td><td>Solo /n</td></tr>
+<tr><td>Direcciones reservadas por subred</td><td>Red y broadcast (−2)</td><td>Ninguna obligatoria (no hay broadcast)</td></tr>
+<tr><td>Tamaño de subred LAN</td><td>Variable (VLSM) para ahorrar</td><td>Siempre /64</td></tr>
+<tr><td>Conteo</td><td>Decimal, saltos de 4, 8, 16, 32…</td><td>Hexadecimal: 0…9, a…f, 10…</td></tr>
+<tr><td>Preocupación principal</td><td>No desperdiciar direcciones</td><td>Orden y jerarquía (sumarización)</td></tr>
+</table></div>
+
+<!-- Herramientas IPv6 -->
+<div class="tool" id="calc-ipv6">
+<h4>🧮 Expandir / comprimir una dirección IPv6</h4>
+<div class="fila">
+  <div><label for="v6in">Dirección IPv6</label><input id="v6in" value="2001:db8:acad:1::10"></div>
+  <div style="flex:0 0 auto"><button onclick="convV6()">Convertir</button></div>
+</div>
+<div class="salida" id="v6conv"></div>
+<hr style="border:0;border-top:1px dashed var(--line);margin:18px 0">
+<h4>🧮 Generador de subredes IPv6</h4>
+<div class="fila">
+  <div><label for="v6pref">Prefijo original</label><input id="v6pref" value="2001:db8:acad::/48"></div>
+  <div><label for="v6new">Nuevo prefijo</label><input id="v6new" type="number" min="1" max="128" value="64"></div>
+  <div><label for="v6cant">¿Cuántas mostrar?</label><input id="v6cant" type="number" min="1" max="256" value="20"></div>
+  <div style="flex:0 0 auto"><button onclick="subV6()">Generar</button></div>
+</div>
+<div class="salida" id="v6sub"></div>
+<hr style="border:0;border-top:1px dashed var(--line);margin:18px 0">
+<h4>🧮 Generador EUI-64</h4>
+<div class="fila">
+  <div><label for="eMac">Dirección MAC</label><input id="eMac" value="00:1A:2B:3C:4D:5E"></div>
+  <div><label for="ePref">Prefijo /64</label><input id="ePref" value="2001:db8:acad:1::/64"></div>
+  <div style="flex:0 0 auto"><button onclick="eui64()">Generar</button></div>
+</div>
+<div class="salida" id="eOut"></div>
+</div>
+<a class="volver" href="#inicio">↑ Volver al inicio</a>
+</section>
+
+<!-- ========== 7. ICMP ========== -->
+<section class="tema" id="u2-icmp">
+<h2 class="t">7. ICMP · Protocolo de Mensajes de Control de Internet</h2>
+<p class="objetivo"><b>Saber:</b> Identificar las características y funciones del protocolo ICMP.</p>
+<div class="caja concepto"><div class="tit">🔵 Concepto</div>
+<p>Como IP es de “máximo esfuerzo” y no avisa de problemas, existe <b>ICMP</b>: un protocolo que transporta <b>mensajes de error y de diagnóstico</b> entre dispositivos. ICMP viaja <b>dentro de un paquete IP</b> (protocolo número 1). Para IPv6 existe <b>ICMPv6</b>, que además incluye las funciones de NDP (reemplazo de ARP) y la autoconfiguración.</p>
+</div>
+<div class="caja analogia"><div class="tit">🟠 Analogía: el acuse del correo</div>
+<p>ICMP es como el <b>aviso de la paquetería</b>: “su envío fue devuelto: domicilio inexistente” (destino inalcanzable), “el paquete excedió el tiempo de tránsito” (tiempo excedido) o “sí, el destinatario está ahí” (respuesta de eco).</p>
+</div>
+<h3>Mensajes ICMP más importantes</h3>
+<div class="tabla-wrap"><table>
+<tr><th>Mensaje</th><th>Tipo (v4)</th><th>¿Cuándo se envía?</th></tr>
+<tr><td><b>Echo Request / Echo Reply</b></td><td>8 / 0</td><td>Lo usa <code>ping</code> para comprobar si un host responde.</td></tr>
+<tr><td><b>Destino inalcanzable</b></td><td>3</td><td>No hay ruta a la red (código 0), host inalcanzable (1), protocolo (2) o puerto inalcanzable (3).</td></tr>
+<tr><td><b>Tiempo excedido</b></td><td>11</td><td>El TTL (o Hop Limit) llegó a 0. Lo aprovecha <code>traceroute</code>.</td></tr>
+<tr><td><b>Redirección</b></td><td>5</td><td>El router avisa al host que hay un mejor gateway en su red.</td></tr>
+</table></div>
+<h4>Mensajes exclusivos de ICMPv6</h4>
+<div class="tabla-wrap"><table>
+<tr><th>Mensaje</th><th>Función</th></tr>
+<tr><td>Router Solicitation (RS) · tipo 133</td><td>El host pide información a los routers (ff02::2).</td></tr>
+<tr><td>Router Advertisement (RA) · tipo 134</td><td>El router anuncia prefijo, gateway y banderas SLAAC/DHCPv6.</td></tr>
+<tr><td>Neighbor Solicitation (NS) · tipo 135</td><td>Preguntar la MAC de una IPv6 (como solicitud ARP) y detectar duplicados (DAD).</td></tr>
+<tr><td>Neighbor Advertisement (NA) · tipo 136</td><td>Responder con la MAC (como respuesta ARP).</td></tr>
+<tr><td>Redirect · tipo 137</td><td>Indicar un mejor siguiente salto.</td></tr>
+</table></div>
+
+<h3>Herramientas: ping y traceroute</h3>
+<div class="caja ejemplo"><div class="tit">🟢 Ejemplo: ping</div>
+<pre><span class="p">C:\&gt;</span> ping 192.168.10.65
+Haciendo ping a 192.168.10.65 con 32 bytes de datos:
+Respuesta desde 192.168.10.65: bytes=32 tiempo=1ms TTL=255
+Respuesta desde 192.168.10.65: bytes=32 tiempo&lt;1m TTL=255
+Paquetes: enviados = 4, recibidos = 4, perdidos = 0 (0% perdidos)
+
+<span class="p">C:\&gt;</span> ping 2001:db8:acad:1::1        <span class="m">← también funciona con IPv6 (ping -6)</span></pre>
+<p><b>Secuencia de diagnóstico recomendada:</b> ① <code>ping 127.0.0.1</code> (o <code>::1</code>) → pila TCP/IP · ② ping al gateway → red local · ③ ping a un host remoto → enrutamiento.</p>
+</div>
+<div class="caja ejemplo"><div class="tit">🟢 Ejemplo: traceroute (tracert en Windows)</div>
+<p>Envía paquetes con TTL = 1, 2, 3… Cada router que descarta el paquete por TTL = 0 responde “tiempo excedido”, revelando su IP. Así se descubre el camino completo.</p>
+<pre><span class="p">C:\&gt;</span> tracert 8.8.8.8
+  1    &lt;1 ms   &lt;1 ms   &lt;1 ms  192.168.10.65      <span class="m">← gateway</span>
+  2     6 ms    5 ms    6 ms  200.10.10.2        <span class="m">← router del ISP</span>
+  3    14 ms   13 ms   15 ms  187.141.x.x
+  4    22 ms   21 ms   22 ms  8.8.8.8            <span class="m">← destino</span></pre>
+</div>
+<div class="caja alerta"><div class="tit">🔴 Cuidado</div>
+<p>Muchos administradores bloquean ICMP en IPv4 por seguridad (para que no se pueda “escanear” la red con ping). En <b>IPv6 no se debe bloquear ICMPv6 por completo</b>, porque sin él no funcionan NDP, SLAAC ni el descubrimiento de MTU.</p>
+</div>
+<a class="volver" href="#inicio">↑ Volver al inicio</a>
+</section>
+
+<!-- =================== UNIDAD III =================== -->
+<div class="unidad-banner" id="unidad3">
+  <div class="num">III</div>
+  <div><h2>Comunicación de aplicaciones de red</h2>
+  <p>Capa de transporte (TCP/UDP), capas superiores del modelo OSI, protocolos de aplicación y seguridad.</p></div>
+</div>
+
+<!-- ========== 1. TCP / UDP ========== -->
+<section class="tema" id="u3-tcpudp">
+<h2 class="t">1. Suite de protocolos · Protocolos TCP y UDP</h2>
+<p class="objetivo"><b>Saber:</b> Identificar el grupo de protocolos correspondientes a las capas superiores del modelo de referencia OSI. Identificar el uso de los protocolos TCP y UDP.</p>
+
+<div class="caja concepto"><div class="tit">🔵 Concepto: suite de protocolos</div>
+<p>Una <b>suite de protocolos</b> es un conjunto de protocolos que trabajan juntos, cada uno en su capa. La más usada es <b>TCP/IP</b>. El modelo <b>OSI</b> (7 capas) es la referencia teórica; el modelo <b>TCP/IP</b> (4 capas) es el que se implementa en la práctica.</p>
+</div>
+<div class="tabla-wrap"><table>
+<tr><th>#</th><th>Capa OSI</th><th>Capa TCP/IP</th><th>Protocolos de ejemplo</th><th>Unidad de datos (PDU)</th></tr>
+<tr><td>7</td><td><b>Aplicación</b></td><td rowspan="3" style="vertical-align:middle"><b>Aplicación</b></td><td rowspan="3" style="vertical-align:middle">HTTP, HTTPS, DNS, DHCP, FTP, TFTP, SMTP, POP3, IMAP, Telnet, SSH, TLS</td><td rowspan="3" style="vertical-align:middle">Datos</td></tr>
+<tr><td>6</td><td><b>Presentación</b></td></tr>
+<tr><td>5</td><td><b>Sesión</b></td></tr>
+<tr><td>4</td><td>Transporte</td><td>Transporte</td><td><b>TCP, UDP</b></td><td>Segmento / datagrama</td></tr>
+<tr><td>3</td><td>Red</td><td>Internet</td><td>IPv4, IPv6, ICMP</td><td>Paquete</td></tr>
+<tr><td>2</td><td>Enlace de datos</td><td rowspan="2" style="vertical-align:middle">Acceso a la red</td><td>Ethernet, Wi-Fi (802.11), ARP</td><td>Trama</td></tr>
+<tr><td>1</td><td>Física</td><td>Cables, señales, conectores</td><td>Bits</td></tr>
+</table></div>
+
+<h3>La capa de transporte y los puertos</h3>
+<p>La capa de transporte lleva los datos <b>de una aplicación a otra aplicación</b> (no solo de equipo a equipo). Para saber a qué aplicación entregar, usa <b>números de puerto</b> (16 bits: 0 – 65,535).</p>
+<div class="caja analogia"><div class="tit">🟠 Analogía: el edificio de departamentos</div>
+<p>La <b>dirección IP</b> es la dirección del <b>edificio</b>; el <b>puerto</b> es el número de <b>departamento</b>. El cartero (IP) lleva la carta al edificio correcto, pero el conserje (transporte) la entrega al departamento 80 (servidor web) o al 25 (correo). La combinación <b>IP + puerto</b> se llama <b>socket</b>: <code>192.168.1.10:80</code>.</p>
+</div>
+<div class="grid3">
+<div class="card"><h5>Puertos bien conocidos</h5><p><b>0 – 1023</b>. Servicios estándar: 80 HTTP, 443 HTTPS, 53 DNS, 22 SSH.</p></div>
+<div class="card"><h5>Puertos registrados</h5><p><b>1024 – 49151</b>. Aplicaciones específicas: 3306 MySQL, 3389 Escritorio remoto.</p></div>
+<div class="card"><h5>Puertos dinámicos / privados</h5><p><b>49152 – 65535</b>. El cliente elige uno temporal como origen para cada conexión.</p></div>
+</div>
+
+<h3>TCP vs UDP</h3>
+<div class="tabla-wrap"><table>
+<tr><th>Característica</th><th>TCP (Transmission Control Protocol)</th><th>UDP (User Datagram Protocol)</th></tr>
+<tr><td>Conexión</td><td><b>Orientado a conexión</b> (saludo de 3 vías antes de enviar)</td><td><b>Sin conexión</b></td></tr>
+<tr><td>Confiabilidad</td><td>Acuses de recibo (ACK) y retransmisión de lo perdido</td><td>No confirma ni retransmite</td></tr>
+<tr><td>Orden</td><td>Reordena los segmentos con números de secuencia</td><td>Los datos pueden llegar desordenados</td></tr>
+<tr><td>Control de flujo</td><td>Sí (ventana deslizante)</td><td>No</td></tr>
+<tr><td>Encabezado</td><td>20 bytes mínimo</td><td>8 bytes</td></tr>
+<tr><td>Velocidad</td><td>Más lento, más “pesado”</td><td>Muy rápido y ligero</td></tr>
+<tr><td>Usos</td><td>Web (HTTP/HTTPS), correo, FTP, SSH, descargas</td><td>DNS, DHCP, TFTP, VoIP, video en vivo, juegos en línea, streaming</td></tr>
+</table></div>
+<div class="grid2">
+<div class="caja analogia" style="margin:0"><div class="tit">🟠 TCP = correo certificado</div><p>Primero confirmas que el destinatario está, cada página va numerada, el destinatario firma de recibido, y si una hoja se pierde se reenvía. Seguro pero más lento.</p></div>
+<div class="caja analogia" style="margin:0"><div class="tit">🟠 UDP = transmisión de radio</div><p>El locutor habla y no espera confirmación. Si te perdiste una palabra, no se repite; lo importante es que sea en tiempo real. En una videollamada es mejor perder un cuadro que congelar todo.</p></div>
+</div>
+
+<h3>Saludo de tres vías de TCP (three-way handshake)</h3>
+<div class="svgbox">
+<svg viewBox="0 0 640 230" width="640">
+  <defs><marker id="fl2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10z" fill="#888"/></marker></defs>
+  <rect x="20" y="10" width="130" height="38" rx="7" fill="#2563eb"/><text x="85" y="34" text-anchor="middle" style="fill:#fff;font-weight:700">Cliente</text>
+  <rect x="490" y="10" width="130" height="38" rx="7" fill="#15803d"/><text x="555" y="34" text-anchor="middle" style="fill:#fff;font-weight:700">Servidor :80</text>
+  <line x1="85" y1="48" x2="85" y2="225" stroke="#888" stroke-dasharray="4 4"/><line x1="555" y1="48" x2="555" y2="225" stroke="#888" stroke-dasharray="4 4"/>
+  <line x1="85" y1="80" x2="550" y2="105" stroke="#2563eb" stroke-width="2.5" marker-end="url(#fl2)"/><text x="320" y="82" text-anchor="middle" style="font-size:13px">① SYN (seq=100) “¿Podemos hablar?”</text>
+  <line x1="555" y1="130" x2="90" y2="155" stroke="#15803d" stroke-width="2.5" marker-end="url(#fl2)"/><text x="320" y="132" text-anchor="middle" style="font-size:13px">② SYN-ACK (seq=300, ack=101) “Sí, ¿me escuchas?”</text>
+  <line x1="85" y1="180" x2="550" y2="205" stroke="#2563eb" stroke-width="2.5" marker-end="url(#fl2)"/><text x="320" y="182" text-anchor="middle" style="font-size:13px">③ ACK (ack=301) “Sí, empecemos”</text>
+</svg></div>
+<p>Para cerrar la conexión se usa un intercambio de <b>FIN</b> y <b>ACK</b> (cierre de 4 vías). Es como colgar una llamada: “bueno, me despido” – “ok” – “yo también me despido” – “ok”.</p>
+
+<div class="caja ejemplo"><div class="tit">🟢 Ejemplo: ver conexiones activas</div>
+<pre><span class="p">C:\&gt;</span> netstat -an
+  Proto  Dirección local         Dirección remota        Estado
+  TCP    192.168.10.66:51034     142.250.72.110:443      ESTABLISHED   <span class="m">← HTTPS</span>
+  TCP    192.168.10.66:51040     192.168.10.10:22        ESTABLISHED   <span class="m">← SSH</span>
+  UDP    0.0.0.0:68              *:*                                   <span class="m">← cliente DHCP</span></pre>
+<p>El puerto de origen (51034) es dinámico; el de destino (443) indica el servicio.</p>
+</div>
+<a class="volver" href="#inicio">↑ Volver al inicio</a>
+</section>
+
+<!-- ========== 2. CAPAS SUPERIORES ========== -->
+<section class="tema" id="u3-capas">
+<h2 class="t">2. Protocolos de Capas de Aplicación, Presentación y Sesión</h2>
+<p class="objetivo"><b>Saber:</b> Identificar la función de la capa de Aplicación, Presentación, Sesión y su interrelación.</p>
+
+<div class="grid3">
+<div class="card"><h5>7 · Aplicación</h5><p>Es la <b>interfaz entre el usuario (sus programas) y la red</b>. Define cómo las aplicaciones piden y reciben servicios: navegar, enviar correo, transferir archivos, resolver nombres.</p><p><i>Protocolos:</i> HTTP, DNS, SMTP, FTP, DHCP.</p></div>
+<div class="card"><h5>6 · Presentación</h5><p>Se encarga del <b>formato</b> de los datos para que ambos extremos los entiendan:<br>• <b>Codificación/conversión</b> (ASCII, UTF-8)<br>• <b>Compresión</b> (JPEG, MP3, MP4, ZIP)<br>• <b>Cifrado</b> (TLS/SSL)</p></div>
+<div class="card"><h5>5 · Sesión</h5><p><b>Abre, mantiene y cierra el “diálogo”</b> entre aplicaciones. Controla turnos, puntos de sincronización y reanudación. Ej.: mantener tu sesión iniciada en la plataforma escolar, reanudar una descarga.</p></div>
+</div>
+
+<div class="caja analogia"><div class="tit">🟠 Analogía: una videoconferencia con intérprete</div>
+<p><b>Aplicación</b> = la plataforma de reuniones que usas (lo que ves y con lo que interactúas).<br>
+<b>Presentación</b> = el <b>intérprete</b> que traduce del inglés al español, y además comprime tu voz y la cifra para que nadie la espíe.<br>
+<b>Sesión</b> = el <b>moderador</b> que abre la reunión, da la palabra por turnos, y si alguien se desconecta le permite volver a entrar donde se quedó.</p>
+</div>
+
+<h3>Interrelación: cómo trabajan juntas</h3>
+<p>Cuando abres <code>https://www.uthh.edu.mx</code> en el navegador:</p>
+<ol class="pasos">
+<li><b>Aplicación:</b> el navegador genera una petición <b>HTTP GET</b> para la página.</li>
+<li><b>Presentación:</b> la petición se codifica (UTF-8), puede comprimirse (gzip) y se <b>cifra con TLS</b> (la “S” de HTTPS).</li>
+<li><b>Sesión:</b> se establece y mantiene la sesión TLS y se gestionan cookies/tokens para que el servidor “recuerde” quién eres entre una página y otra.</li>
+<li>Se entrega a <b>Transporte</b> (TCP puerto 443) y baja por las demás capas. En el servidor, el proceso es <b>inverso</b>: sesión, descifrado y presentación de los datos a la aplicación web.</li>
+</ol>
+
+<h3>Modelos de interacción</h3>
+<div class="grid2">
+<div class="card"><h5>Cliente–servidor</h5><p>El <b>cliente</b> solicita y el <b>servidor</b> (siempre encendido, con dirección conocida) responde. Ej.: navegador y servidor web, cliente de correo y servidor de correo.</p></div>
+<div class="card"><h5>Peer-to-peer (P2P)</h5><p>Cada equipo puede actuar como cliente <b>y</b> servidor al mismo tiempo, sin un servidor central. Ej.: BitTorrent, compartir carpetas en una red pequeña.</p></div>
+</div>
+<a class="volver" href="#inicio">↑ Volver al inicio</a>
+</section>
+
+<!-- ========== 3. PROTOCOLOS ========== -->
+<section class="tema" id="u3-protocolos">
+<h2 class="t">3. Protocolos Web, P2P, correo, FTP y TFTP</h2>
+<p class="objetivo"><b>Saber:</b> Identificar las características de los protocolos HTTP, HTTPS, FTP, TFTP, DNS, DHCP, SMTP, POP, IMAP, P2P y Telnet.</p>
+
+<h3>Tabla resumen</h3>
+<div class="tabla-wrap"><table>
+<tr><th>Protocolo</th><th>Puerto(s)</th><th>Transporte</th><th>Función</th></tr>
+<tr><td><b>HTTP</b></td><td>80</td><td>TCP</td><td>Transferir páginas web (sin cifrar)</td></tr>
+<tr><td><b>HTTPS</b></td><td>443</td><td>TCP</td><td>HTTP cifrado con TLS</td></tr>
+<tr><td><b>FTP</b></td><td>21 (control), 20 (datos)</td><td>TCP</td><td>Transferencia de archivos con usuario y contraseña</td></tr>
+<tr><td><b>TFTP</b></td><td>69</td><td>UDP</td><td>Transferencia simple de archivos, sin autenticación</td></tr>
+<tr><td><b>DNS</b></td><td>53</td><td>UDP (y TCP)</td><td>Traducir nombres a direcciones IP</td></tr>
+<tr><td><b>DHCP</b></td><td>67 servidor / 68 cliente (v6: 547/546)</td><td>UDP</td><td>Asignar IP automáticamente</td></tr>
+<tr><td><b>SMTP</b></td><td>25 (587 envío de clientes)</td><td>TCP</td><td>Enviar correo</td></tr>
+<tr><td><b>POP3</b></td><td>110 (995 seguro)</td><td>TCP</td><td>Descargar correo al equipo</td></tr>
+<tr><td><b>IMAP</b></td><td>143 (993 seguro)</td><td>TCP</td><td>Leer correo sincronizado en el servidor</td></tr>
+<tr><td><b>Telnet</b></td><td>23</td><td>TCP</td><td>Acceso remoto a línea de comandos (sin cifrar)</td></tr>
+<tr><td><b>SSH</b></td><td>22</td><td>TCP</td><td>Acceso remoto cifrado (reemplazo de Telnet)</td></tr>
+</table></div>
+
+<h3>HTTP y HTTPS</h3>
+<div class="caja concepto"><div class="tit">🔵 Concepto</div>
+<p><b>HTTP</b> (<i>HyperText Transfer Protocol</i>) es el protocolo de la Web: el cliente (navegador) envía una <b>petición</b> y el servidor responde con el recurso. Es <b>sin estado</b>: cada petición es independiente (por eso se usan cookies). <b>HTTPS</b> agrega <b>TLS</b> para cifrar y autenticar al servidor mediante un <b>certificado digital</b> (el candado del navegador).</p>
+</div>
+<div class="grid2">
+<div class="card"><h5>Métodos más usados</h5><p><b>GET</b> obtener un recurso · <b>POST</b> enviar datos (formulario) · <b>PUT</b> actualizar · <b>DELETE</b> eliminar.</p></div>
+<div class="card"><h5>Códigos de respuesta</h5><p><b>200</b> OK · <b>301</b> movido · <b>404</b> no encontrado · <b>403</b> prohibido · <b>500</b> error del servidor.</p></div>
+</div>
+<div class="caja ejemplo"><div class="tit">🟢 Ejemplo de petición y respuesta</div>
+<pre><span class="k">GET /alumnos/calificaciones HTTP/1.1</span>
+Host: www.uthh.edu.mx
+User-Agent: Mozilla/5.0
+
+<span class="c">HTTP/1.1 200 OK</span>
+Content-Type: text/html; charset=UTF-8
+Content-Length: 5120
+
+&lt;html&gt; … &lt;/html&gt;</pre>
+</div>
+<div class="caja analogia"><div class="tit">🟠 Analogía</div><p>HTTP es enviar una <b>postal</b>: cualquiera en el camino puede leerla. HTTPS es enviar la misma carta dentro de un <b>sobre sellado</b> que solo el destinatario puede abrir, y con su identificación verificada.</p></div>
+
+<h3>DNS · Sistema de Nombres de Dominio</h3>
+<div class="caja concepto"><div class="tit">🔵 Concepto</div>
+<p>Las personas recordamos nombres (<code>www.uthh.edu.mx</code>); las computadoras necesitan IP. <b>DNS</b> traduce nombres a IP. Es una base de datos <b>jerárquica y distribuida</b>: raíz (.) → dominios de nivel superior (.mx, .com) → dominios (uthh.edu.mx) → hosts (www).</p>
+</div>
+<div class="caja analogia"><div class="tit">🟠 Analogía: la agenda del celular</div><p>Tú buscas “Mamá” y el celular marca el número. DNS es la <b>agenda de contactos de Internet</b>.</p></div>
+<ol class="pasos">
+<li>Escribes <code>www.uthh.edu.mx</code>. La PC revisa su <b>caché</b>.</li>
+<li>Si no lo tiene, pregunta a su <b>servidor DNS</b> (resolvedor) configurado.</li>
+<li>El resolvedor consulta a un servidor <b>raíz</b> → le dice dónde están los de <b>.mx</b> → estos le dicen dónde está el de <b>uthh.edu.mx</b> → este responde con la IP.</li>
+<li>El resolvedor entrega la IP a la PC y la guarda en caché.</li>
+</ol>
+<p><b>Registros comunes:</b> <b>A</b> (nombre → IPv4) · <b>AAAA</b> (nombre → IPv6) · <b>MX</b> (servidor de correo) · <b>CNAME</b> (alias) · <b>NS</b> (servidor de nombres).</p>
+<pre><span class="p">C:\&gt;</span> nslookup www.ejemplo.com
+Servidor:  dns.local
+Address:   192.168.10.10
+Nombre:    www.ejemplo.com
+Addresses: 2001:db8:acad:10::80     <span class="m">← registro AAAA</span>
+           203.0.113.80             <span class="m">← registro A</span></pre>
+
+<h3>DHCP · Protocolo de Configuración Dinámica de Host</h3>
+<div class="caja concepto"><div class="tit">🔵 Concepto</div>
+<p><b>DHCP</b> entrega automáticamente a cada equipo: <b>dirección IP, máscara, puerta de enlace y servidores DNS</b>, por un tiempo limitado llamado <b>arrendamiento (lease)</b>. Evita configurar a mano cientos de equipos y los conflictos de IP duplicadas.</p>
+</div>
+<p><b>Proceso DORA:</b></p>
+<div class="grid2">
+<div class="card"><h5>D · Discover</h5><p>El cliente (sin IP, origen 0.0.0.0) grita en broadcast: “¿Hay algún servidor DHCP?”</p></div>
+<div class="card"><h5>O · Offer</h5><p>El servidor ofrece: “Te propongo 192.168.10.150 por 8 horas”.</p></div>
+<div class="card"><h5>R · Request</h5><p>El cliente responde: “Acepto la 192.168.10.150” (en broadcast, para que otros servidores sepan que no aceptó su oferta).</p></div>
+<div class="card"><h5>A · Acknowledge</h5><p>El servidor confirma: “Listo, es tuya”, y la registra.</p></div>
+</div>
+<div class="caja analogia"><div class="tit">🟠 Analogía: el hotel</div><p>Llegas a la recepción (Discover), te ofrecen la habitación 150 (Offer), dices “la tomo” (Request) y te dan la llave por 3 noches (Acknowledge). Al terminar el tiempo, renuevas o la devuelves.</p></div>
+<pre><span class="c">! Servidor DHCP en un router Cisco</span>
+<span class="p">R1(config)#</span> ip dhcp excluded-address 192.168.10.129 192.168.10.145
+<span class="p">R1(config)#</span> ip dhcp pool LAB
+<span class="p">R1(dhcp-config)#</span> network 192.168.10.128 255.255.255.192
+<span class="p">R1(dhcp-config)#</span> default-router 192.168.10.129
+<span class="p">R1(dhcp-config)#</span> dns-server 8.8.8.8</pre>
+
+<h3>Correo electrónico: SMTP, POP3 e IMAP</h3>
+<div class="svgbox">
+<svg viewBox="0 0 820 150" width="820">
+  <defs><marker id="fl3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10z" fill="#888"/></marker></defs>
+  <g style="font-size:12.5px">
+  <rect x="5" y="45" width="130" height="50" rx="8" fill="#2563eb"/><text x="70" y="75" text-anchor="middle" style="fill:#fff;font-weight:700">Remitente</text>
+  <rect x="230" y="45" width="150" height="50" rx="8" fill="#15803d"/><text x="305" y="68" text-anchor="middle" style="fill:#fff;font-weight:700">Servidor correo</text><text x="305" y="85" text-anchor="middle" style="fill:#fff">remitente</text>
+  <rect x="470" y="45" width="150" height="50" rx="8" fill="#15803d"/><text x="545" y="68" text-anchor="middle" style="fill:#fff;font-weight:700">Servidor correo</text><text x="545" y="85" text-anchor="middle" style="fill:#fff">destinatario</text>
+  <rect x="705" y="45" width="110" height="50" rx="8" fill="#b45309"/><text x="760" y="75" text-anchor="middle" style="fill:#fff;font-weight:700">Destinatario</text>
+  <line x1="135" y1="70" x2="228" y2="70" stroke="#888" stroke-width="2.5" marker-end="url(#fl3)"/><text x="182" y="60" text-anchor="middle">SMTP</text>
+  <line x1="380" y1="70" x2="468" y2="70" stroke="#888" stroke-width="2.5" marker-end="url(#fl3)"/><text x="424" y="60" text-anchor="middle">SMTP</text>
+  <line x1="703" y1="70" x2="622" y2="70" stroke="#888" stroke-width="2.5" marker-end="url(#fl3)"/><text x="662" y="60" text-anchor="middle">POP3 / IMAP</text>
+  <text x="410" y="130" text-anchor="middle" style="font-style:italic">SMTP “empuja” (envía) el correo · POP3 / IMAP lo “jalan” (recuperan)</text>
+  </g>
+</svg></div>
+<div class="tabla-wrap"><table>
+<tr><th></th><th>POP3</th><th>IMAP</th></tr>
+<tr><td>¿Dónde queda el correo?</td><td>Se descarga al equipo y normalmente se borra del servidor</td><td>Se queda en el servidor y se sincroniza</td></tr>
+<tr><td>Varios dispositivos</td><td>Difícil (cada uno tiene su copia)</td><td>Ideal: celular, laptop y PC ven lo mismo</td></tr>
+<tr><td>Carpetas, leído/no leído</td><td>Solo locales</td><td>Sincronizadas</td></tr>
+<tr><td>Analogía</td><td>Recoger tus cartas del apartado postal y llevártelas a casa</td><td>Dejar tus cartas en una caja fuerte del banco y consultarlas desde cualquier sucursal</td></tr>
+</table></div>
+
+<h3>FTP y TFTP</h3>
+<div class="grid2">
+<div class="card"><h5>FTP · File Transfer Protocol</h5><p>• TCP, con <b>dos conexiones</b>: puerto <b>21 control</b> (comandos) y <b>20 datos</b> (archivos).<br>• Requiere <b>usuario y contraseña</b> (o anónimo).<br>• Permite listar, subir, bajar, renombrar y borrar.<br>• Envía credenciales sin cifrar; alternativas seguras: <b>SFTP</b> (sobre SSH) o <b>FTPS</b>.</p></div>
+<div class="card"><h5>TFTP · Trivial FTP</h5><p>• <b>UDP puerto 69</b>, muy simple y ligero.<br>• <b>Sin autenticación</b> y sin listar directorios.<br>• Uso típico: <b>respaldar o cargar el IOS y configuraciones de routers/switches</b>, arranque de equipos por red (PXE).</p></div>
+</div>
+<pre><span class="p">R1#</span> copy running-config tftp:
+Address or name of remote host []? 192.168.10.10
+Destination filename [r1-confg]? R1-respaldo.cfg
+!!
+1234 bytes copied in 0.5 secs</pre>
+
+<h3>Telnet y SSH</h3>
+<p><b>Telnet</b> (TCP 23) permite administrar equipos a distancia por línea de comandos, pero envía <b>todo en texto plano</b>, incluida la contraseña: cualquiera que capture el tráfico (por ejemplo con Wireshark) la puede leer. Por eso hoy se usa <b>SSH</b> (TCP 22), que cifra la sesión.</p>
+<div class="caja analogia"><div class="tit">🟠 Analogía</div><p>Telnet es dar tus instrucciones <b>gritando</b> por el pasillo; SSH es dárselas en <b>clave secreta</b> que solo el otro entiende.</p></div>
+
+<h3>P2P · Peer-to-peer</h3>
+<div class="caja concepto"><div class="tit">🔵 Concepto</div>
+<p>En las redes <b>P2P</b> los equipos (pares o <i>peers</i>) comparten recursos <b>directamente</b> entre sí, sin depender de un servidor central. Cada par es cliente y servidor a la vez.</p>
+</div>
+<div class="grid2">
+<div class="card"><h5>Ventajas</h5><p>• Económica: no requiere servidor dedicado.<br>• Escalable: más usuarios = más fuentes de descarga.<br>• Sin punto único de falla.</p></div>
+<div class="card"><h5>Desventajas</h5><p>• Difícil de administrar y asegurar.<br>• Riesgo de malware y contenido ilegal.<br>• Rendimiento depende de los pares conectados.</p></div>
+</div>
+<div class="caja analogia"><div class="tit">🟠 Analogía: intercambio de apuntes</div><p>En lugar de que todos saquen copias en la papelería (servidor), cada alumno pasa las hojas que tiene a sus compañeros y recibe las que le faltan. BitTorrent funciona así: descargas pedazos de un archivo desde muchos pares y, al mismo tiempo, compartes los que ya tienes.</p></div>
+<a class="volver" href="#inicio">↑ Volver al inicio</a>
+</section>
+
+<!-- ========== 4. SEGURIDAD ========== -->
+<section class="tema" id="u3-seguridad">
+<h2 class="t">4. Seguridad, confiabilidad y buenas prácticas en la implementación de redes</h2>
+<p class="objetivo"><b>Saber:</b> Identificar los fundamentos de seguridad de una red de datos. Describir las características de confiabilidad de una red. Identificar buenas prácticas de seguridad en la red.</p>
+
+<h3>Fundamentos de seguridad: la triada CIA</h3>
+<div class="grid3">
+<div class="card"><h5>🔒 Confidencialidad</h5><p>Solo las personas autorizadas pueden ver la información. <i>Herramientas:</i> cifrado, contraseñas, control de acceso.</p></div>
+<div class="card"><h5>✅ Integridad</h5><p>La información no se altera sin autorización. <i>Herramientas:</i> funciones hash, firmas digitales.</p></div>
+<div class="card"><h5>🟢 Disponibilidad</h5><p>Los servicios están accesibles cuando se necesitan. <i>Herramientas:</i> redundancia, respaldos, protección contra DoS.</p></div>
+</div>
+<div class="caja analogia"><div class="tit">🟠 Analogía: el examen final</div><p><b>Confidencialidad:</b> nadie debe ver el examen antes de tiempo. <b>Integridad:</b> nadie debe cambiar las respuestas ni las calificaciones. <b>Disponibilidad:</b> el examen debe estar listo el día y hora acordados.</p></div>
+
+<h3>Amenazas comunes</h3>
+<div class="tabla-wrap"><table>
+<tr><th>Amenaza</th><th>Descripción</th></tr>
+<tr><td>Malware (virus, gusanos, troyanos, ransomware)</td><td>Software malicioso que daña, espía o secuestra información.</td></tr>
+<tr><td>Phishing / ingeniería social</td><td>Engañar al usuario (correos falsos) para que entregue contraseñas o datos.</td></tr>
+<tr><td>Denegación de servicio (DoS/DDoS)</td><td>Saturar un servidor para que deje de responder.</td></tr>
+<tr><td>Intermediario (Man-in-the-middle)</td><td>Interceptar la comunicación (por ejemplo con ARP spoofing).</td></tr>
+<tr><td>Reconocimiento</td><td>Escaneo de puertos y hosts para buscar vulnerabilidades.</td></tr>
+<tr><td>Acceso no autorizado</td><td>Contraseñas débiles o por defecto, puertos abiertos innecesarios.</td></tr>
+<tr><td>Amenazas internas</td><td>Usuarios de la propia organización, por error o con mala intención.</td></tr>
+</table></div>
+
+<h3>Características de una red confiable</h3>
+<div class="grid2">
+<div class="card"><h5>🛡️ Tolerancia a fallas</h5><p>Si un enlace o equipo falla, la red sigue funcionando por <b>caminos redundantes</b>. Ej.: dos enlaces a Internet, dos switches de núcleo.</p></div>
+<div class="card"><h5>📈 Escalabilidad</h5><p>Puede <b>crecer</b> (más usuarios, más servicios) sin afectar a los actuales. Ej.: diseño jerárquico y un buen plan de direccionamiento.</p></div>
+<div class="card"><h5>🚦 Calidad de servicio (QoS)</h5><p>Da <b>prioridad</b> al tráfico sensible (voz, video) sobre el que puede esperar (descargas, correo).</p></div>
+<div class="card"><h5>🔐 Seguridad</h5><p>Protege la infraestructura (equipos, cuartos de telecom) y la información (triada CIA).</p></div>
+</div>
+<div class="caja analogia"><div class="tit">🟠 Analogía: la red de carreteras</div><p><b>Tolerancia a fallas</b> = si cierran la autopista hay carreteras alternas. <b>Escalabilidad</b> = se pueden construir más carriles sin cerrar la carretera. <b>QoS</b> = carril exclusivo para ambulancias. <b>Seguridad</b> = casetas, vigilancia y reglas de tránsito.</p></div>
+
+<h3>Buenas prácticas de seguridad en la red</h3>
+<div class="grid2">
+<div class="card"><h5>Dispositivos de red</h5><p>• Cambiar usuarios/contraseñas por defecto.<br>• <code>enable secret</code> y <code>service password-encryption</code>.<br>• Usar <b>SSH</b> en lugar de Telnet.<br>• Apagar puertos e interfaces que no se usan (<code>shutdown</code>).<br>• Banner de advertencia legal.<br>• Actualizar el firmware/IOS.<br>• Respaldar configuraciones (TFTP).</p></div>
+<div class="card"><h5>Red y servicios</h5><p>• <b>Firewall</b> y <b>listas de control de acceso (ACL)</b>.<br>• Segmentar con <b>subredes y VLAN</b> (alumnos, docentes, administración, invitados).<br>• Wi-Fi con <b>WPA2/WPA3</b> y red separada para invitados.<br>• Preferir protocolos seguros: HTTPS, SFTP, SSH, IMAPS.<br>• Monitoreo y registros (logs, Syslog).</p></div>
+<div class="card"><h5>Usuarios</h5><p>• Contraseñas largas y únicas; <b>autenticación de dos factores</b>.<br>• Capacitación contra phishing.<br>• Principio de <b>mínimo privilegio</b>: cada quien solo accede a lo que necesita.</p></div>
+<div class="card"><h5>Físico y continuidad</h5><p>• Cuartos de telecomunicaciones cerrados con llave.<br>• UPS (no-break) y protección eléctrica.<br>• Respaldos periódicos (regla 3-2-1: 3 copias, 2 medios, 1 fuera del sitio).<br>• Documentar la red (topología y tabla de direccionamiento).</p></div>
+</div>
+<div class="caja ejemplo"><div class="tit">🟢 Ejemplo: asegurar el acceso remoto con SSH en un router</div>
+<pre><span class="p">R1(config)#</span> ip domain-name uthh.edu.mx
+<span class="p">R1(config)#</span> crypto key generate rsa general-keys modulus 2048
+<span class="p">R1(config)#</span> username admin secret Adm1n$2026
+<span class="p">R1(config)#</span> ip ssh version 2
+<span class="p">R1(config)#</span> security passwords min-length 10
+<span class="p">R1(config)#</span> login block-for 120 attempts 3 within 60   <span class="m">! bloquea tras 3 intentos fallidos</span>
+<span class="p">R1(config)#</span> line vty 0 4
+<span class="p">R1(config-line)#</span> login local
+<span class="p">R1(config-line)#</span> transport input ssh
+<span class="p">R1(config-line)#</span> exec-timeout 5 0                     <span class="m">! cierra sesión tras 5 min inactivo</span></pre>
+</div>
+<a class="volver" href="#inicio">↑ Volver al inicio</a>
+</section>
+
+<!-- ========== AUTOEVALUACIÓN ========== -->
+<section class="tema" id="autoeval">
+<h2 class="t">Autoevaluación</h2>
+<p class="objetivo">Resuelve cada ejercicio en tu cuaderno y después despliega la respuesta para comprobar.</p>
+
+<h3>Unidad II</h3>
+<details class="preg"><summary>1. ¿Qué componente del router guarda la <i>startup-config</i> y cuál la <i>running-config</i>?</summary><div><p><b>NVRAM</b> guarda la startup-config (no se borra al apagar). <b>RAM</b> guarda la running-config (se pierde al apagar si no se guarda).</p></div></details>
+<details class="preg"><summary>2. Una PC con 192.168.1.10/24 quiere enviar datos a 10.0.0.5. ¿De quién pide la MAC por ARP?</summary><div><p>De su <b>puerta de enlace</b> (el router), porque el destino está en otra red. El broadcast ARP no cruza routers.</p></div></details>
+<details class="preg"><summary>3. Divide 192.168.100.0/24 en 8 subredes. Indica prefijo, máscara, hosts por subred y la 3.ª subred completa.</summary><div><p>2<sup>3</sup> = 8 → <b>/27</b>, máscara <b>255.255.255.224</b>, 2<sup>5</sup> − 2 = <b>30 hosts</b>, salto 32.<br>Subredes: .0, .32, .64, .96, .128, .160, .192, .224.<br>3.ª subred (índice 2): red <b>192.168.100.64/27</b>, hosts <b>.65 – .94</b>, broadcast <b>.95</b>.</p></div></details>
+<details class="preg"><summary>4. ¿A qué red pertenece 172.16.45.200/20? ¿Cuál es su broadcast?</summary><div><p>Máscara 255.255.240.0; tercer octeto 45 → múltiplo de 16 inferior = 32. Red <b>172.16.32.0/20</b>, broadcast <b>172.16.47.255</b>, hosts 172.16.32.1 – 172.16.47.254.</p></div></details>
+<details class="preg"><summary>5. Con VLSM sobre 10.10.10.0/24 asigna: A = 60 hosts, B = 28 hosts, C = 12 hosts, enlace WAN = 2 hosts.</summary><div><p>A: <b>10.10.10.0/26</b> (.1 – .62, bc .63) · B: <b>10.10.10.64/27</b> (.65 – .94, bc .95) · C: <b>10.10.10.96/28</b> (.97 – .110, bc .111) · WAN: <b>10.10.10.112/30</b> (.113 – .114, bc .115).</p></div></details>
+<details class="preg"><summary>6. Comprime: 2001:0db8:0000:0000:0000:0000:0bad:0001</summary><div><p><b>2001:db8::bad:1</b></p></div></details>
+<details class="preg"><summary>7. Expande: fe80::a:0:1</summary><div><p>Hay 5 hextetos → faltan 3 de ceros: <b>fe80:0000:0000:0000:0000:000a:0000:0001</b>. (Primero fe80, luego 3 hextetos de ceros por el <code>::</code>, y después a, 0, 1).</p></div></details>
+<details class="preg"><summary>8. Clasifica: (a) fd12:3456:789a:1::5 (b) fe80::1 (c) 2800:3f0:4001::200e (d) ff02::2</summary><div><p>(a) <b>ULA</b> (privada interna) · (b) <b>Link-local</b> · (c) <b>Global unicast</b> (pública) · (d) <b>Multicast</b> “todos los routers”.</p></div></details>
+<details class="preg"><summary>9. Una empresa recibe 2001:db8:cafe::/48. ¿Cuántas subredes /64 puede crear? Escribe la 1.ª, la 11.ª y la última.</summary><div><p>2<sup>16</sup> = <b>65,536</b>. 1.ª: <b>2001:db8:cafe:0::/64</b> · 11.ª (ID 10 decimal = a hex): <b>2001:db8:cafe:a::/64</b> · última: <b>2001:db8:cafe:ffff::/64</b>.</p></div></details>
+<details class="preg"><summary>10. Genera la LLA por EUI-64 para la MAC 00:50:56:AB:CD:EF.</summary><div><p>00:50:56 | FF:FE | AB:CD:EF → invertir 7.º bit de 00 → 02 → <b>fe80::250:56ff:feab:cdef</b>.</p></div></details>
+<details class="preg"><summary>11. Un RA llega con M = 0 y O = 1. ¿Cómo obtiene el host su dirección y su DNS?</summary><div><p>Dirección por <b>SLAAC</b> (prefijo del RA + su ID de interfaz) y DNS por <b>DHCPv6 sin estado</b>.</p></div></details>
+<details class="preg"><summary>12. ¿Qué mensaje ICMP aprovecha traceroute y por qué?</summary><div><p><b>Tiempo excedido (tipo 11)</b>: al enviar paquetes con TTL creciente, cada router que lo reduce a 0 responde con este mensaje y revela su dirección.</p></div></details>
+
+<h3>Unidad III</h3>
+<details class="preg"><summary>13. ¿Qué protocolo de transporte usarías para una videollamada y para descargar un PDF? ¿Por qué?</summary><div><p>Videollamada: <b>UDP</b> (prioriza tiempo real; perder un cuadro no importa). PDF: <b>TCP</b> (el archivo debe llegar completo y en orden).</p></div></details>
+<details class="preg"><summary>14. Ordena los mensajes DHCP y di cuáles son broadcast.</summary><div><p><b>Discover → Offer → Request → Acknowledge</b>. En IPv4, Discover y Request se envían en broadcast (el cliente aún no tiene IP); Offer y Ack pueden ser broadcast o unicast según el cliente.</p></div></details>
+<details class="preg"><summary>15. ¿Qué capa OSI se encarga del cifrado y la compresión?</summary><div><p>La capa de <b>Presentación</b> (6).</p></div></details>
+<details class="preg"><summary>16. Un usuario lee su correo en celular y laptop y quiere ver lo mismo en ambos. ¿POP3 o IMAP?</summary><div><p><b>IMAP</b>, porque mantiene los mensajes y su estado sincronizados en el servidor.</p></div></details>
+<details class="preg"><summary>17. ¿Por qué se recomienda SSH en lugar de Telnet?</summary><div><p>Telnet envía todo en <b>texto plano</b> (incluidas las contraseñas); SSH <b>cifra</b> la sesión, protegiendo la confidencialidad.</p></div></details>
+<details class="preg"><summary>18. Menciona las 4 características de una red confiable.</summary><div><p><b>Tolerancia a fallas, escalabilidad, calidad de servicio (QoS) y seguridad.</b></p></div></details>
+</section>
+
+<!-- ========== GLOSARIO ========== -->
+<section class="tema" id="glosario">
+<h2 class="t">Glosario rápido</h2>
+<div class="grid2">
+<div>
+<p><b>ACL:</b> lista de reglas que permite o deniega tráfico en un router.</p>
+<p><b>Anycast:</b> una dirección compartida por varios equipos; responde el más cercano.</p>
+<p><b>ARP:</b> obtiene la MAC a partir de una IPv4.</p>
+<p><b>Broadcast:</b> envío a todos los equipos de la red local (no existe en IPv6).</p>
+<p><b>CIDR:</b> notación /n sin clases para indicar el prefijo.</p>
+<p><b>DAD:</b> detección de direcciones duplicadas en IPv6.</p>
+<p><b>Default gateway:</b> IP del router al que el host envía el tráfico de otras redes.</p>
+<p><b>EUI-64:</b> método para formar el ID de interfaz IPv6 a partir de la MAC.</p>
+<p><b>GUA:</b> dirección IPv6 global unicast (pública).</p>
+<p><b>Hexteto:</b> grupo de 16 bits (4 dígitos hex) de una IPv6.</p>
+<p><b>IOS:</b> sistema operativo de los equipos Cisco.</p>
+</div>
+<div>
+<p><b>LLA:</b> dirección IPv6 de enlace local (fe80::/10).</p>
+<p><b>MTU:</b> tamaño máximo de paquete que admite un medio.</p>
+<p><b>NAT:</b> traduce direcciones privadas a públicas.</p>
+<p><b>NDP:</b> protocolo de descubrimiento de vecinos de IPv6 (reemplaza a ARP).</p>
+<p><b>Nibble:</b> 4 bits = un dígito hexadecimal.</p>
+<p><b>Prefijo:</b> cantidad de bits que identifican la red (/24, /64).</p>
+<p><b>RA / RS:</b> anuncio y solicitud de router (ICMPv6).</p>
+<p><b>SLAAC:</b> autoconfiguración de direcciones sin estado en IPv6.</p>
+<p><b>Socket:</b> combinación IP + puerto.</p>
+<p><b>TTL / Hop Limit:</b> número máximo de saltos de un paquete.</p>
+<p><b>ULA:</b> dirección IPv6 única local (privada, fd00::/8).</p>
+<p><b>VLSM:</b> subredes con máscaras de distinto tamaño.</p>
+</div>
+</div>
+</section>
+</main>
+
+<footer>
+Fundamentos de Redes · Unidades II y III · Material de consulta para el alumno.<br>
+Las direcciones <code>2001:db8::/32</code>, <code>192.0.2.0/24</code> y <code>203.0.113.0/24</code> usadas en los ejemplos están reservadas para documentación. Este sitio funciona sin conexión a Internet.
+</footer>
+
+<script>
+/* ---------- Navegación ---------- */
+(function(){
+  var side=document.getElementById('side'), btn=document.getElementById('menuBtn');
+  btn.addEventListener('click',function(){side.classList.toggle('abierto');});
+  side.addEventListener('click',function(e){ if(e.target.tagName==='A' && window.innerWidth<=920) side.classList.remove('abierto'); });
+  var links=[].slice.call(side.querySelectorAll('a'));
+  document.getElementById('buscar').addEventListener('input',function(){
+    var q=this.value.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+    links.forEach(function(a){
+      var t=a.textContent.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+      a.classList.toggle('oculto', q && t.indexOf(q)<0);
+    });
+  });
+  var secciones=links.map(function(a){return document.querySelector(a.getAttribute('href'));}).filter(Boolean);
+  if('IntersectionObserver' in window){
+    var obs=new IntersectionObserver(function(ents){
+      ents.forEach(function(en){
+        if(en.isIntersecting){
+          links.forEach(function(a){a.classList.toggle('activo', a.getAttribute('href')==='#'+en.target.id);});
+        }
+      });
+    },{rootMargin:'-10% 0px -80% 0px'});
+    secciones.forEach(function(s){obs.observe(s);});
+  }
+})();
+
+/* ---------- Utilidades IPv4 ---------- */
+function ipToInt(s){
+  var p=s.trim().split('.'); if(p.length!==4) return null;
+  var n=0; for(var i=0;i<4;i++){ if(!/^\d{1,3}$/.test(p[i])) return null; var v=+p[i]; if(v>255) return null; n=n*256+v; }
+  return n>>>0;
+}
+function intToIp(n){ return [(n>>>24)&255,(n>>>16)&255,(n>>>8)&255,n&255].join('.'); }
+function maskInt(p){ return p===0?0:(0xFFFFFFFF<<(32-p))>>>0; }
+function bin8(v){ return ('00000000'+v.toString(2)).slice(-8); }
+function binIp(n){ return [(n>>>24)&255,(n>>>16)&255,(n>>>8)&255,n&255].map(bin8).join('.'); }
+function fmt(n){ return n.toLocaleString('es-MX'); }
+function parseCidr(s){
+  var m=s.trim().split('/'); if(m.length!==2) return null;
+  var ip=ipToInt(m[0]), p=+m[1];
+  if(ip===null || !/^\d+$/.test(m[1]) || p<0 || p>32) return null;
+  return {ip:ip,p:p};
+}
+function colorBits(n,p,q){ /* p = prefijo original, q = nuevo prefijo */
+  var b=binIp(n).replace(/\./g,''), out='';
+  for(var i=0;i<32;i++){
+    var cls=i<p?'n1':(i<q?'n4':'n3');
+    out+='<span class="'+cls+'">'+b[i]+'</span>'; if(i%8===7 && i<31) out+='.';
+  }
+  return out;
+}
+function tipoV4(n){
+  var a=(n>>>24)&255,b=(n>>>16)&255;
+  if(a===10||(a===172&&b>=16&&b<=31)||(a===192&&b===168)) return 'Privada (RFC 1918)';
+  if(a===127) return 'Loopback';
+  if(a===169&&b===254) return 'APIPA / enlace local';
+  if(a===100&&b>=64&&b<=127) return 'CGNAT (compartida)';
+  if(a>=224&&a<=239) return 'Multicast (clase D)';
+  if(a>=240) return 'Experimental (clase E)';
+  if(a===0) return 'Especial (red 0)';
+  return 'Pública';
+}
+function claseV4(n){ var a=(n>>>24)&255; return a<128?'A':a<192?'B':a<224?'C':a<240?'D':'E'; }
+
+function calcV4(){
+  var out=document.getElementById('v4out'), c=parseCidr(document.getElementById('v4red').value), k=parseInt(document.getElementById('v4n').value,10);
+  if(!c){ out.innerHTML='<p class="err">Escribe la red en formato 192.168.10.0/24</p>'; return; }
+  if(!(k>=1)){ out.innerHTML='<p class="err">Indica un número de subredes válido.</p>'; return; }
+  var bits=Math.ceil(Math.log2(k)); var q=c.p+bits;
+  if(q>30){ out.innerHTML='<p class="err">No alcanza: se necesitarían '+bits+' bits prestados y el prefijo quedaría en /'+q+' (máximo útil /30).</p>'; return; }
+  var red=(c.ip & maskInt(c.p))>>>0, total=Math.pow(2,bits), tam=Math.pow(2,32-q), hosts=tam-2;
+  var h='';
+  if(red!==c.ip) h+='<p>ℹ️ Ajusté la dirección a la red real: <b>'+intToIp(red)+'/'+c.p+'</b>.</p>';
+  h+='<p><b>Bits prestados:</b> '+bits+' (2<sup>'+bits+'</sup> = '+fmt(total)+' subredes ≥ '+k+') · <b>Nuevo prefijo:</b> /'+q+' · <b>Máscara:</b> '+intToIp(maskInt(q))+
+     ' · <b>Hosts por subred:</b> 2<sup>'+(32-q)+'</sup> − 2 = '+fmt(hosts)+' · <b>Tamaño de bloque:</b> '+fmt(tam)+'</p>';
+  h+='<p>Bits: <span class="n1">red original</span> · <span class="n4">bits prestados (subred)</span> · <span class="n3">host</span></p>';
+  h+='<div class="tabla-wrap"><table><tr><th>#</th><th>Red</th><th>Binario</th><th>Primer host</th><th>Último host</th><th>Broadcast</th></tr>';
+  var lim=total<=64?total:32;
+  for(var i=0;i<lim;i++){ h+=filaV4(i,red+i*tam,tam,c.p,q); }
+  if(total>64){ h+='<tr><td colspan="6" style="text-align:center">… '+fmt(total-33)+' subredes más …</td></tr>'; h+=filaV4(total-1,red+(total-1)*tam,tam,c.p,q); }
+  h+='</table></div>';
+  out.innerHTML=h;
+}
+function filaV4(i,n,tam,p,q){
+  n=n>>>0;
+  return '<tr><td>'+i+'</td><td class="mono">'+intToIp(n)+'/'+q+'</td><td class="mono" style="font-size:12.5px">'+colorBits(n,p,q)+'</td><td class="mono">'+intToIp(n+1)+'</td><td class="mono">'+intToIp(n+tam-2)+'</td><td class="mono">'+intToIp(n+tam-1)+'</td></tr>';
+}
+function anaV4(){
+  var out=document.getElementById('v4ana'), c=parseCidr(document.getElementById('v4ip').value);
+  if(!c){ out.innerHTML='<p class="err">Escribe la dirección en formato 192.168.10.75/26</p>'; return; }
+  var m=maskInt(c.p), red=(c.ip&m)>>>0, bc=(red|(~m>>>0))>>>0, tam=Math.pow(2,32-c.p);
+  var h='<div class="binario">IP        '+(intToIp(c.ip)+'               ').slice(0,16)+'→ '+colorBits(c.ip,c.p,c.p)+
+        '\nMáscara   '+(intToIp(m)+'               ').slice(0,16)+'→ '+colorBits(m,c.p,c.p)+
+        '\n          ────────────────────────────────────────────────── AND'+
+        '\nRed       '+(intToIp(red)+'               ').slice(0,16)+'→ '+colorBits(red,c.p,c.p)+
+        '\nBroadcast '+(intToIp(bc)+'               ').slice(0,16)+'→ '+colorBits(bc,c.p,c.p)+'</div>';
+  h+='<ul><li><b>Red:</b> '+intToIp(red)+'/'+c.p+' · <b>Máscara:</b> '+intToIp(m)+'</li>';
+  if(c.p<=30) h+='<li><b>Rango de hosts:</b> '+intToIp(red+1)+' – '+intToIp(bc-1)+' ('+fmt(tam-2)+' hosts)</li><li><b>Broadcast:</b> '+intToIp(bc)+'</li>';
+  else h+='<li>Prefijo /'+c.p+': caso especial ('+(c.p===31?'enlace punto a punto, 2 direcciones':'una sola dirección')+')</li>';
+  if(c.p<=30 && (c.ip===red||c.ip===bc)) h+='<li>⚠️ La dirección escrita es la de <b>'+(c.ip===red?'red':'broadcast')+'</b>: no puede asignarse a un host.</li>';
+  h+='<li><b>Tipo:</b> '+tipoV4(c.ip)+' · <b>Clase histórica:</b> '+claseV4(c.ip)+'</li></ul>';
+  out.innerHTML=h;
+}
+
+/* ---------- Utilidades IPv6 (BigInt) ---------- */
+function expandV6(s){
+  s=s.trim().toLowerCase().split('%')[0];
+  if(!/^[0-9a-f:]+$/.test(s)) return null;
+  var dc=s.split('::'); if(dc.length>2) return null;
+  var izq=dc[0]?dc[0].split(':'):[], der=(dc.length===2&&dc[1])?dc[1].split(':'):[];
+  var faltan=8-izq.length-der.length;
+  if(dc.length===2){ if(faltan<1) return null; } else if(faltan!==0) return null;
+  var grupos=izq.concat(Array(dc.length===2?faltan:0).fill('0'),der);
+  for(var i=0;i<8;i++){ if(!/^[0-9a-f]{1,4}$/.test(grupos[i])) return null; grupos[i]=('0000'+grupos[i]).slice(-4); }
+  return grupos;
+}
+function v6ToBig(g){ return BigInt('0x'+g.join('')); }
+function bigToGroups(n){ var h=n.toString(16).padStart(32,'0'); var g=[]; for(var i=0;i<8;i++) g.push(h.substr(i*4,4)); return g; }
+function compressV6(g){
+  var c=g.map(function(x){return x.replace(/^0+(?=.)/,'');});
+  var mejor=-1,len=0;
+  for(var i=0;i<8;){ if(c[i]==='0'){ var j=i; while(j<8&&c[j]==='0') j++; if(j-i>len&&j-i>=2){mejor=i;len=j-i;} i=j; } else i++; }
+  if(mejor<0) return c.join(':');
+  return c.slice(0,mejor).join(':')+'::'+c.slice(mejor+len).join(':');
+}
+function tipoV6(g){
+  var h=parseInt(g[0],16);
+  if(g.join('')==='0'.repeat(32)) return 'No especificada (::)';
+  if(g.slice(0,7).join('')==='0'.repeat(28) && g[7]==='0001') return 'Loopback (::1)';
+  if((h&0xff00)===0xff00) return 'Multicast (ff00::/8)';
+  if((h&0xffc0)===0xfe80) return 'Link-local (fe80::/10)';
+  if((h&0xfe00)===0xfc00) return 'Unique local – ULA (fc00::/7)';
+  if((h&0xe000)===0x2000) return 'Global unicast – GUA (2000::/3)'+(g[0]==='2001'&&g[1]==='0db8'?' · prefijo de documentación':'');
+  return 'Otro / reservado';
+}
+function convV6(){
+  var out=document.getElementById('v6conv'), g=expandV6(document.getElementById('v6in').value);
+  if(!g){ out.innerHTML='<p class="err">Dirección IPv6 no válida. Revisa que tenga máximo un “::” y grupos de hasta 4 dígitos hex.</p>'; return; }
+  var bin=g.map(function(x){return parseInt(x,16).toString(2).padStart(16,'0').replace(/(.{4})/g,'$1 ').trim();});
+  out.innerHTML='<ul><li><b>Completa:</b> <span class="mono">'+g.join(':')+'</span></li><li><b>Comprimida:</b> <span class="mono">'+compressV6(g)+'</span></li><li><b>Tipo:</b> '+tipoV6(g)+'</li></ul>'+
+    '<div class="binario">'+g.map(function(x,i){return 'Hexteto '+(i+1)+':  '+x+'  →  '+bin[i];}).join('\n')+'</div>';
+}
+function subV6(){
+  var out=document.getElementById('v6sub'), s=document.getElementById('v6pref').value.trim().split('/');
+  var nw=parseInt(document.getElementById('v6new').value,10), cant=parseInt(document.getElementById('v6cant').value,10)||16;
+  if(s.length!==2){ out.innerHTML='<p class="err">Escribe el prefijo como 2001:db8:acad::/48</p>'; return; }
+  var g=expandV6(s[0]), p=parseInt(s[1],10);
+  if(!g||!(p>=0&&p<=128)){ out.innerHTML='<p class="err">Prefijo no válido.</p>'; return; }
+  if(!(nw>p&&nw<=128)){ out.innerHTML='<p class="err">El nuevo prefijo debe ser mayor que /'+p+' y como máximo /128.</p>'; return; }
+  cant=Math.min(Math.max(cant,1),256);
+  var bits=nw-p, total=1n<<BigInt(bits), paso=1n<<BigInt(128-nw);
+  var mascara=((1n<<128n)-1n) ^ ((1n<<BigInt(128-p))-1n);
+  var base=v6ToBig(g)&mascara;
+  var porSub=1n<<BigInt(128-nw);
+  var h='<p><b>Bits de subred usados:</b> '+bits+' · <b>Subredes:</b> 2<sup>'+bits+'</sup> = '+fmt(total)+' · <b>Direcciones por subred:</b> 2<sup>'+(128-nw)+'</sup> = '+fmt(porSub)+'</p>';
+  if(nw%4!==0||p%4!==0) h+='<p>ℹ️ El prefijo no cae en un límite de nibble (múltiplo de 4): los saltos no serán de 1 en 1 en el dígito hexadecimal.</p>';
+  if(nw!==64) h+='<p>ℹ️ Recuerda: las LAN con hosts deben usar /64.</p>';
+  var mostrar=total<BigInt(cant)?Number(total):cant;
+  h+='<div class="tabla-wrap"><table><tr><th>#</th><th>Subred</th><th>Forma completa (azul = prefijo · verde = subred · naranja = interfaz)</th><th>Primera – última dirección</th></tr>';
+  for(var i=0;i<mostrar;i++){ h+=filaV6(BigInt(i),base+BigInt(i)*paso,paso,p,nw); }
+  if(total>BigInt(mostrar)){
+    if(total>BigInt(mostrar)+1n) h+='<tr><td colspan="4" style="text-align:center">… '+fmt(total-BigInt(mostrar)-1n)+' subredes más …</td></tr>';
+    h+=filaV6(total-1n,base+(total-1n)*paso,paso,p,nw);
+  }
+  out.innerHTML=h+'</table></div>';
+}
+function filaV6(i,n,paso,p,nw){
+  var g=bigToGroups(n), ult=bigToGroups(n+paso-1n), hex=g.join(''), html='';
+  for(var k=0;k<32;k++){
+    var bitIni=k*4, cls=bitIni+4<=p?'n1':(bitIni>=nw?'n3':'n2');
+    html+='<span class="'+cls+'">'+hex[k]+'</span>'; if(k%4===3&&k<31) html+=':';
+  }
+  return '<tr><td>'+fmt(i)+'</td><td class="mono"><b>'+compressV6(g)+'/'+nw+'</b></td><td class="mono" style="font-size:12.5px">'+html+'</td><td class="mono" style="font-size:12.5px">'+compressV6(g)+'<br>'+compressV6(ult)+'</td></tr>';
+}
+function eui64(){
+  var out=document.getElementById('eOut'), mac=document.getElementById('eMac').value.trim().toLowerCase().replace(/[^0-9a-f]/g,'');
+  if(mac.length!==12){ out.innerHTML='<p class="err">MAC no válida (deben ser 12 dígitos hex).</p>'; return; }
+  var b=mac.match(/../g), primero=parseInt(b[0],16), inv=(primero^2).toString(16).padStart(2,'0');
+  var id=[inv+b[1],b[2]+'ff','fe'+b[3],b[4]+b[5]];
+  var pr=document.getElementById('ePref').value.trim().split('/')[0], gp=expandV6(pr);
+  var h='<ol class="pasos">'+
+    '<li>Dividir: <span class="mono">'+b.slice(0,3).join(':')+'</span> | <span class="mono">'+b.slice(3).join(':')+'</span></li>'+
+    '<li>Insertar FF:FE: <span class="mono">'+b.slice(0,3).join(':')+':<b>ff:fe</b>:'+b.slice(3).join(':')+'</span></li>'+
+    '<li>Invertir 7.º bit: <span class="mono">'+b[0]+' = '+bin8(primero)+' → '+bin8(primero^2)+' = <b>'+inv+'</b></span></li>'+
+    '<li>ID de interfaz: <span class="mono"><b>'+id.join(':')+'</b></span></li></ol>';
+  var lla=compressV6(['fe80','0000','0000','0000'].concat(id));
+  h+='<ul><li><b>Link-local:</b> <span class="mono">'+lla+'</span></li>';
+  if(gp) h+='<li><b>Con el prefijo:</b> <span class="mono">'+compressV6(gp.slice(0,4).concat(id))+'</span></li>';
+  out.innerHTML=h+'</ul>';
+}
+/* Ejecutar las herramientas con los valores de ejemplo al cargar */
+window.addEventListener('DOMContentLoaded',function(){ try{calcV4();anaV4();convV6();subV6();eui64();}catch(e){} });
+</script>
+</body>
+</html>
